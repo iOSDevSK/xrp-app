@@ -5,8 +5,19 @@
   "main": "src/index.coffee",
   "scripts": {
     "test": "mocha --compilers coffee:coffee-script/register test/**/*",
-    "start": "npm run build && cd Build && cordova build",
-    "build": "cp -R static/ Build/www/ && browserify -t coffeeify --extension='.coffee' src/index.coffee -t jadeify -t stylify -t cssify -t brfs | uglifyjs > Build/www/bundle.js",
+
+    "start": "npm run build && npm run cordova && npm run android",
+    "build": "browserify -t coffeeify --extension='.coffee' src/index.coffee -t jadeify -t stylify -t cssify -t brfs | uglifyjs > static/bundle.js",
+
+    "cordova": "npm run cordova-copy && npm run cordova-build",
+    "cordova-copy": "cp -R static/ Build/www/",
+    "cordova-build": "cd Build && cordova build",
+
+    "android": "npm run android-copy && npm run android-build",
+    "android-copy": "cp -R static/ Build-Android/assets/www/",
+    "android-build": "cd Build-Android && ./cordova/build --debug",
+    "android-deploy": "adb install -r Build-Android/bin/XRP-debug.apk",
+
     "watch": "watchify -t coffeeify --extension='.coffee' src/index.coffee -t jadeify -t stylify -t cssify -t brfs -o Build/www/bundle.js --debug --verbose",
     "serve": "serve --compress -p 3333 Build/www",
     "start-dev": "npm run serve & npm run watch",
