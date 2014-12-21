@@ -56,7 +56,6 @@
     "sinon-chai": "^2.6.0",
     "stylify": "^0.1.5",
     "stylus": "^0.47.3",
-    "uglifyjs": "^2.3.6",
-    "xrp-app-lib": "^1.1.1"
+    "uglifyjs": "^2.3.6"
   }
 }

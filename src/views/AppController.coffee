@@ -1,15 +1,12 @@
 XView = require "./XView"
 Surface = require "famous/core/Surface"
-DrawerLayout = require "./drawer/DrawerLayout"
 TouchSync = require "famous/inputs/TouchSync"
-Drawer = require "./drawer/Drawer"
-Content = require "./content/Content"
-router = require "../Router"
-routes = require "../routes"
-
-# Helper for attaching routes to Controller
-# getCallbackForRoute = (route) ->
-#     @[routes[route]].bind @
+SliderSelector = require "./SliderSelector"
+ContentView = require "./ContentView"
+AddContactView = require "./pages/AddContactView"
+QueryAccountView = require "./pages/QueryAccountView"
+SendPaymentView = require "./pages/SendPaymentView"
+WalletView = require "./pages/WalletView"
 
 ###*
  * Top Level App Controller
@@ -21,80 +18,80 @@ class AppController extends XView
   
     constructor: ->
         super
-        window.AppController = @
-        window.router = router
-        window.routes = routes
 
-        @add new Surface
-            size: [500, 500]
-            properties: backgroundColor: "red"
+        # Root content in center of app, for creating wallet and 
+        # displaying public key
+        @addSubView @rootContentView = new ContentView
 
-        layout = @layout = new DrawerLayout @options.layout
-        layout.drawer = drawer = new Drawer
-        layout.content = content = @content = new Content
+        ##################################
+        #
+        # Modal Views for app actions
+        #
+        ##################################
 
-        sync = new TouchSync @options.sync
- 
-        content.pipe sync
-        sync.pipe layout
- 
-        @add layout
- 
-#        for route, routeWithoutParams of routes
-#            router.route route, routeWithoutParams, getCallbackForRoute.call @, routeWithoutParams
- 
-        @oldSubTree = null
-        @currentSubTree = null
-        @views = {}
+        # AddContactView for associating an entry in the phone's
+        # contacts with a public key
+        @addSubView @addContactView = new AddContactView
+        @show @addContactView, on: "showContactView"
+
+        # QueryAccountView for finding the balance of a public key
+        @addSubView @queryAccountView = new QueryAccountView
+        @show @queryAccountView, on: "openAccountView"
+
+        # SendPaymentView for sending money from app's wallet to
+        # a public key or a contact
+        @addSubView @sendPaymentView = new SendPaymentView
+        @show @sendPaymentView, on: "openPaymentView"
+
+        # WalletView for exporting secret key or changing pin
+        @addSubView @walletView = new WalletView
+        @show @walletView, on: "openWalletView"
+
+        ###################################
+        #
+        # TouchSyncs for selector sliders
+        #
+        ###################################
+        @addSubView @upperSliderSync = new TouchSync @options.sync
+        @addSubView @lowerSliderSync = new TouchSync @options.sync
+
+        @addSubView @upperSlider = new SliderSelector @options.upperSelector
+        @addSubView @lowerSlider = new SliderSelector @options.lowerSelector
+        @viewInFocus = null
 
 AppController.DEFAULT_OPTIONS =
-    layout:
-        drawerLength: 260
-        positionThreshold: 180
-        velocityThreshold: 0.1
-        transition:
-            method: "spring"
-            period: 450
-            dampingRatio: 0.6
     sync:
         direction: TouchSync.DIRECTION_X
 
-# Push the current subtree to the old subtree, show the old
-# subtree in anticipation of the new
-AppController::rotateSubTree = ->
-    @oldSubTree = @currentSubTree
-    @content.show @oldSubtree, transition: no
+    upperSelector:
+        placement: SliderSelector.TOP
+        leftButton:
+            label: "wallet"
+            event: "openWalletView"
+            classes: ["button", "wallet-button"]
+        rightButton:
+            label: "send payment"
+            event: "openSendPaymentView"
+            classes: ["button", "send-payment-button"]
 
-AppController::show = (subtree) ->
-    @rotateSubTree()
-    @oldSubTree.end()
-    @currentSubTree = subtree
-    @content.show @currentSubTree, transition: yes
-    subtree.start()
+    lowerSelector:
+        placement: SliderSelecter.BOTTOM
+        leftButton:
+            label: "add contact"
+            event: "openAddContactView"
+            classes: ["button", "add-contact-button"]
+        rightButton:
+            label: "query account"
+            event: "openAccountView"
+            classes: ["button", "query-account-button"]
 
-AppController::openDrawer = (options) ->
-    @_moveDrawer "open", options
-
-AppController::closeDrawer = (options) ->
-    @_moveDrawer "close", options
-
-AppController::toggleDrawer = (options) ->
-    @_moveDrawer "toggle", options
-
-AppController::_moveDrawer = (method, options = {}) ->
-    switch options.transition
-        when no        then transition = undefined
-        when undefined then transition = @options.layout.transition
-        else                transition = options.transition
-    @layout[method] transition
-
-AppController::showWallet = (url) ->
-    alert "Implement this"
-
-# Set up prototype methods for route responses
-# for _, route of routes
-#     console.log "Routing:", _, route, "./appRoutes/#{route}"
-#     AppController::[route] = require "./appRoutes/#{route}"
+AppController::show = (view, options) ->
+    if options.on
+        @_eventInput.on "openWalletView", @show.bind(@, view)
+    else
+        view.focus()
+        if @viewInFocus then @viewInFocus.hide()
+        @viewInFocus = view
 
 ###*
  * @exports App
