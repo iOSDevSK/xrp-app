@@ -13,11 +13,12 @@ WalletView = require "./pages/WalletView"
  * @class App
  * @extends XView
 ###
-
 class AppController extends XView
   
     constructor: ->
         super
+
+        console.log "start"
 
         # Root content in center of app, for creating wallet and 
         # displaying public key
@@ -65,7 +66,7 @@ AppController.DEFAULT_OPTIONS =
             classes: ["button", "send-payment-button"]
 
     lowerSelector:
-        placement: SliderSelecter.BOTTOM
+        placement: SliderSelector.BOTTOM
         leftButton:
             content: "add contact"
             event: "openAddContactView"
@@ -75,7 +76,7 @@ AppController.DEFAULT_OPTIONS =
             event: "openAccountView"
             classes: ["button", "query-account-button"]
 
-AppController::show = (view, options) ->
+AppController::show = (view, options = {}) ->
     if options.on
         @_eventInput.on "openWalletView", @show.bind(@, view)
     else

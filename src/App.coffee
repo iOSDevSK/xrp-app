@@ -1,4 +1,5 @@
 Engine = require "famous/core/Engine"
+Surface = require "famous/core/Surface"
 
 # Register Spring Transition
 Transitionable = require "famous/transitions/Transitionable"
@@ -7,10 +8,11 @@ SnapTransition = require "famous/transitions/SnapTransition"
 Transitionable.registerMethod "spring", SpringTransition
 Transitionable.registerMethod "snap", SnapTransition
 
-Surface = require "famous/core/Surface"
+AppController = require "./views/AppController"
 
 # Set debug or production environment
-window.__environment = environment = "debug"
+#window.__environment = environment = "debug"
+window.__environment = environment = "chrome"
 window.log = require("./log")(environment)
 
 # Create context and set Perspective
@@ -20,8 +22,11 @@ start = ->
     mainContext.setPerspective 800
 
     # Add app to the mainContext
-    AppController = require "./views/AppController"
     mainContext.add new AppController
 
-document.addEventListener "deviceready", start, false
+switch environment
+    when "debug"
+        document.addEventListener "deviceready", start, false
+    when "chrome"
+        start()
 

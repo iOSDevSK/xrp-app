@@ -6,3 +6,4 @@ require "famous-polyfills"
 
 # Include Famo.us App
 require "./App"
+

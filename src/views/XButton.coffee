@@ -4,8 +4,8 @@ ImageSurface = require "famous/surfaces/ImageSurface"
 Modifier = require "famous/core/Modifier"
 
 class XButton extends XView
-  constructor: ->
-    super
+  constructor: (options) ->
+    super options
 
     surfaceType = if @options.ImageSurface then ImageSurface else Surface
     @content = new surfaceType @options
@@ -14,6 +14,8 @@ class XButton extends XView
     @contentModifier = new Modifier @options.modifier
     @add @contentModifier
     .add @content
+
+    @subscribe @content
 
 XButton.DEFAULT_OPTIONS =
   content: "Button"

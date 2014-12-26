@@ -2,8 +2,12 @@ XView = require "./XView"
 XButton = require "./XButton"
 TouchSync = require "famous/inputs/TouchSync"
 Modifier = require "famous/core/Modifier"
+Transform = require "famous/core/Transform"
 Transitionable = require "famous/transitions/Transitionable"
+RenderNode = require "famous/core/RenderNode"
+GridLayout = require "famous/views/GridLayout"
 Timer = require "famous/utilities/Timer"
+Surface = require "famous/core/Surface"
 
 class SliderSelector extends XView
     constructor: (options) ->
@@ -11,16 +15,33 @@ class SliderSelector extends XView
 
         @offset = offset = new Transitionable 0
 
-        @leftButton = new XButton options.leftButton
-        @rightButton = new XButton options.rightButton
+#@leftButton = new XButton options.leftButton
+#@rightButton = new XButton options.rightButton
+        @leftButton = new XButton properties: backgroundColor: "red"
+        @rightButton = new XButton properties: backgroundColor: "blue"
 
-        @subscribe @sync = new TouchSync @options.sync
+        @subscribe leftSync = new TouchSync @options.sync
+        @subscribe rightSync = new TouchSync @options.sync
 
-        @layout = new GridLayout @options.layout
-        @layout.sequenceFrom [@leftNode, @rightNode]
+        @leftButton.pipeThroughTouchEvents()
+        @leftButton.pipe leftSync
+        @rightButton.pipeThroughTouchEvents()
+        @rightButton.pipe rightSync
 
-        @layoutModifier = new Modifier
-            transform: ->
+        leftModifier = new Modifier
+            size: [window.innerWidth / 2, undefined]
+            align: [0, 0]
+            origin: [0, 0]
+
+        rightModifier = new Modifier
+            size: [window.innerWidth / 2, undefined]
+            align: [1, 0]
+            origin: [1, 0]
+
+        layoutModifier = new Modifier
+            size: [undefined, @options.height]
+            align: [0, options.placement]
+            transform: =>
                 x = offset.get()
                 if x > @options.sliding.offsetThreshold
                     @broadcast options.leftButton.event
@@ -30,38 +51,50 @@ class SliderSelector extends XView
                     @reset
                 Transform.translate x, 0, 0
 
-        # When left button is slid far enough or thrown
-            @broadcast options.leftButton.event
-
-        # When right button is the same
-            @broadcast options.rightButton.event
-
-        @leftButton.content.on "touchstart", =>
+        leftSync.on "start", =>
             x = offset.get()
             x += @options.sliding.touchOffset
             offset.set x, @options.sliding.touchTransition
 
-        @rightButton.content.on "touchstart", =>
+        rightSync.on "start", =>
             x = offset.get()
             x -= @options.sliding.touchOffset
             offset.set x, @options.sliding.touchTransition
 
-        @listen "update", (event) ->
+        moveSlider = (event) ->
             x = offset.get()
             x += event.delta
             offset.set x
 
-        @listen "end", @checkVelocity
+        leftSync.on "update", moveSlider
+        rightSync.on "update", moveSlider
+
+        leftSync.on "end", (e) =>
+            if @checkVelocity e then @broadcast options.leftButton.event
+
+        rightSync.on "end", (e) =>
+            if @checkVelocity e then @broadcast options.rightButton.event
+
+        layoutNode = @add layoutModifier
+        layoutNode.add leftModifier
+                  .add @leftButton
+        layoutNode.add rightModifier
+                  .add @rightButton
 
     checkVelocity: (e) ->
-        v_min = @options.sliding.velocityThreshold
-        @reset if v_min > e.velocity < -v_min
+        v_max = @options.sliding.velocityThreshold
+        if v_max > e.velocity > -v_max then @reset() else true
                 
     reset: ->
         @offset.set 0, @options.sliding.touchTransition
         console.log "reset offset transitionable"
+        false
+
+SliderSelector.TOP = 0
+SliderSelector.BOTTOM = 1
 
 SliderSelector.DEFAULT_OPTIONS =
+    height: 80
     sync:
         direction: TouchSync.DIRECTION_X
     layout:
@@ -69,7 +102,7 @@ SliderSelector.DEFAULT_OPTIONS =
     sliding:
         touchOffset: 60
         offsetThreshold: 180
-        velocityThreshold: 1.5
+        velocityThreshold: 2
         touchTransition:
            method: "snap"
 

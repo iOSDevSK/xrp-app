@@ -1,5 +1,6 @@
 Surface = require "famous/core/Surface"
 Modifier = require "famous/core/Modifier"
+Transform = require "famous/core/Transform"
 PageView = require "./PageView"
 
 class AddContactView extends PageView
