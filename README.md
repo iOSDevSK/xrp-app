@@ -24,3 +24,9 @@ To develop in the browser:
 npm run start-dev
 ```
 
+##Plugins:
+```
+com.phonegap.plugins.barcodescanner/
+org.apache.cordova.console/
+org.apache.cordova.contacts/
+```
