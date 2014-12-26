@@ -41,6 +41,7 @@ class SliderSelector extends XView
         layoutModifier = new Modifier
             size: [undefined, @options.height]
             align: [0, options.placement]
+            origin: [0, options.placement]
             transform: =>
                 x = offset.get()
                 if x > @options.sliding.offsetThreshold
