@@ -1,6 +1,5 @@
 Surface = require "famous/core/Surface"
 Modifier = require "famous/core/Modifier"
-Transitionable = require "famous/transitions/Transitionable"
 PageView = require "./PageView"
 
 class AddContactView extends PageView
@@ -22,7 +21,6 @@ class AddContactView extends PageView
         @label = new Surface
             classes: ["add-contact-view-label"]
             content: "Add Contact View"
-
 
 module.exports = AddContactView
 

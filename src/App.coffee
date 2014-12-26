@@ -3,7 +3,9 @@ Engine = require "famous/core/Engine"
 # Register Spring Transition
 Transitionable = require "famous/transitions/Transitionable"
 SpringTransition = require "famous/transitions/SpringTransition"
+SnapTransition = require "famous/transitions/SnapTransition"
 Transitionable.registerMethod "spring", SpringTransition
+Transitionable.registerMethod "snap", SnapTransition
 
 Surface = require "famous/core/Surface"
 

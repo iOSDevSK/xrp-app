@@ -2,7 +2,7 @@ XView = require "./XView"
 Surface = require "famous/core/Surface"
 TouchSync = require "famous/inputs/TouchSync"
 SliderSelector = require "./SliderSelector"
-ContentView = require "./ContentView"
+ContentView = require "./pages/ContentView"
 AddContactView = require "./pages/AddContactView"
 QueryAccountView = require "./pages/QueryAccountView"
 SendPaymentView = require "./pages/SendPaymentView"
@@ -47,41 +47,31 @@ class AppController extends XView
         @addSubView @walletView = new WalletView
         @show @walletView, on: "openWalletView"
 
-        ###################################
-        #
-        # TouchSyncs for selector sliders
-        #
-        ###################################
-        @addSubView @upperSliderSync = new TouchSync @options.sync
-        @addSubView @lowerSliderSync = new TouchSync @options.sync
-
         @addSubView @upperSlider = new SliderSelector @options.upperSelector
         @addSubView @lowerSlider = new SliderSelector @options.lowerSelector
         @viewInFocus = null
 
 AppController.DEFAULT_OPTIONS =
-    sync:
-        direction: TouchSync.DIRECTION_X
 
     upperSelector:
         placement: SliderSelector.TOP
         leftButton:
-            label: "wallet"
+            content: "wallet"
             event: "openWalletView"
             classes: ["button", "wallet-button"]
         rightButton:
-            label: "send payment"
+            content: "send payment"
             event: "openSendPaymentView"
             classes: ["button", "send-payment-button"]
 
     lowerSelector:
         placement: SliderSelecter.BOTTOM
         leftButton:
-            label: "add contact"
+            content: "add contact"
             event: "openAddContactView"
             classes: ["button", "add-contact-button"]
         rightButton:
-            label: "query account"
+            content: "query account"
             event: "openAccountView"
             classes: ["button", "query-account-button"]
 
