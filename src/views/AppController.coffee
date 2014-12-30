@@ -21,7 +21,7 @@ class AppController extends XView
         # Root content in center of app, for creating wallet and 
         # displaying public key
         @addSubView @rootContentView = new ContentView
-        @show @addSubView, on: "openContentView"
+        @show @rootContentView, on: "openHomeView"
 
         # AddContactView for associating an entry in the phone's
         # contacts with a public key
@@ -48,8 +48,8 @@ AppController::show = (view, options = {}) ->
         @_eventInput.on options.on, @show.bind @, view
     else
         console.log "show", view, options
+        @viewInFocus.hide()
         view.focus()
-        if @viewInFocus then @viewInFocus.hide()
         @viewInFocus = view
 
 ###*

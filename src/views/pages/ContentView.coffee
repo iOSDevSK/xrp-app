@@ -8,6 +8,7 @@ Transform = require "famous/core/Transform"
 class ContentView extends PageView
     constructor: ->
         super
+        @progress.set 0
 
         @sliderTransitionable = new Transitionable 0
 
@@ -62,11 +63,11 @@ class ContentView extends PageView
         window.cv = @
 
 ContentView::showSliders = ->
-    @sliderTransitionable.set 0, @options.transition, => @_subscribeSliders()
+    @sliderTransitionable.set 0, @transition, => @_subscribeSliders()
 
 ContentView::hideSliders = ->
     @_unsubscribeSliders()
-    @sliderTransitionable.set 1, @options.transition
+    @sliderTransitionable.set 1, @transition
 
 ContentView::resetSliders = ->
     @upperSlider.reset velocity: 0, hasTransition: no
@@ -93,7 +94,7 @@ ContentView::transition = duration: 800, curve: 'easeOut'
 
 ContentView.DEFAULT_OPTIONS =
 
-    sliderOffsetMultiplier: 1.2
+    sliderOffsetMultiplier: 2
 
     upperSelector:
         placement: SliderSelector.TOP
