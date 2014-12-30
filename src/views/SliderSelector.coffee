@@ -18,8 +18,8 @@ class SliderSelector extends XView
         @leftButton = new XButton options.leftButton
         @rightButton = new XButton options.rightButton
 
-        @subscribe leftSync = new TouchSync @options.sync
-        @subscribe rightSync = new TouchSync @options.sync
+        @subscribe @leftSync = leftSync = new TouchSync @options.sync
+        @subscribe @rightSync = rightSync = new TouchSync @options.sync
 
         @leftButton.pipeThroughTouchEvents()
         @leftButton.pipe leftSync
@@ -49,11 +49,13 @@ class SliderSelector extends XView
                 Transform.translate x, 0, 0
 
         leftSync.on "start", =>
+            @broadcast "touchDownOnView", @
             x = offset.get()
             x += @options.sliding.touchOffset
             offset.set x, @options.sliding.touchTransition
 
         rightSync.on "start", =>
+            @broadcast "touchDownOnView", @
             x = offset.get()
             x -= @options.sliding.touchOffset
             offset.set x, @options.sliding.touchTransition
@@ -67,9 +69,11 @@ class SliderSelector extends XView
         rightSync.on "update", moveSlider
 
         leftSync.on "end", (e) =>
+            @broadcast "touchUpOnView"
             if @checkVelocity e then @broadcast options.leftButton.event
 
         rightSync.on "end", (e) =>
+            @broadcast "touchUpOnView"
             if @checkVelocity e then @broadcast options.rightButton.event
 
         layoutNode = @add layoutModifier
@@ -77,18 +81,25 @@ class SliderSelector extends XView
         leftNode.add new Modifier origin: [1, 0], align: [1, 0], size: [innerWidth, undefined]
                 .add @leftButton
         rightNode = layoutNode.add rightModifier
-        rightNode.add @rightButton
 
-    checkVelocity: (e) ->
-        @reset e
-        v_max = @options.sliding.velocityThreshold
-        #v_max > e.velocity > -v_max then @reset(e) else true
-        v_max > e.velocity > -v_max
+        rightNode.add new Modifier origin: [0, 0], align: [0, 0], size: [innerWidth, undefined]
+                 .add @rightButton
+
+SliderSelector::quiet = ->
+    @leftButton.unpipe @leftSync
+    @rightButton.unpipe @rightSync
+        
+SliderSelector::unquiet = ->
+    @leftButton.pipe @leftSync
+    @rightButton.pipe @rightSync
+
+SliderSelector::checkVelocity = (e) ->
+    @reset e
+    v_max = @options.sliding.velocityThreshold
+    v_max > e.velocity > -v_max
                 
-    reset: (e = {velocity: 0}) ->
-        @offset.set 0, method: "spring", period: 400, dampingRatio: 0.6, velocity: -e.velocity
-        console.log "reset offset transitionable"
-        false
+SliderSelector::reset = (e = {velocity: 0}) ->
+    @offset.set 0, method: "spring", period: 400, dampingRatio: 0.6, velocity: -e.velocity
 
 SliderSelector.TOP = 0
 SliderSelector.BOTTOM = 1

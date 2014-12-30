@@ -18,8 +18,6 @@ class AppController extends XView
     constructor: ->
         super
 
-        console.log "start"
-
         # Root content in center of app, for creating wallet and 
         # displaying public key
         @addSubView @rootContentView = new ContentView
@@ -52,6 +50,11 @@ class AppController extends XView
         @addSubView @lowerSlider = new SliderSelector @options.lowerSelector
         @viewInFocus = null
 
+        @listen "touchDownOnView", (view) => @onlyListenTo view
+        @listen "touchUpOnView", ->
+            debugger
+            @subscribeAll()
+
 AppController.DEFAULT_OPTIONS =
 
     upperSelector:
@@ -78,7 +81,7 @@ AppController.DEFAULT_OPTIONS =
 
 AppController::show = (view, options = {}) ->
     if options.on
-        @_eventInput.on options.on, @show.bind(@, view)
+        @_eventInput.on options.on, @show.bind @, view
     else
         console.log "show", view, options
         view.focus()
