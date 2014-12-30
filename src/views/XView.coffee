@@ -13,8 +13,11 @@ XView::onlyListenTo = (viewToListenTo) ->
     @_shushAll except: viewToListenTo
 
 XView::_shushAll = ({except}) ->
-    for thing in @_thingsToListenTo
-        @shush thing if thing isnt except
+    if except instanceof Array
+        @_shushAll thing for thing in except
+    else
+        for thing in @_thingsToListenTo
+            @shush thing if thing isnt except
 
 XView::shush = (view) ->
     view.quiet?()

@@ -21,12 +21,7 @@ class AppController extends XView
         # Root content in center of app, for creating wallet and 
         # displaying public key
         @addSubView @rootContentView = new ContentView
-
-        ##################################
-        #
-        # Modal Views for app actions
-        #
-        ##################################
+        @show @addSubView, on: "openContentView"
 
         # AddContactView for associating an entry in the phone's
         # contacts with a public key
@@ -46,38 +41,7 @@ class AppController extends XView
         @addSubView @walletView = new WalletView
         @show @walletView, on: "openWalletView"
 
-        @addSubView @upperSlider = new SliderSelector @options.upperSelector
-        @addSubView @lowerSlider = new SliderSelector @options.lowerSelector
-        @viewInFocus = null
-
-        @listen "touchDownOnView", (view) => @onlyListenTo view
-        @listen "touchUpOnView", ->
-            debugger
-            @subscribeAll()
-
-AppController.DEFAULT_OPTIONS =
-
-    upperSelector:
-        placement: SliderSelector.TOP
-        leftButton:
-            content: "wallet"
-            event: "openWalletView"
-            classes: ["left-button", "wallet-button"]
-        rightButton:
-            content: "send payment"
-            event: "openSendPaymentView"
-            classes: ["right-button", "send-payment-button"]
-
-    lowerSelector:
-        placement: SliderSelector.BOTTOM
-        leftButton:
-            content: "add contact"
-            event: "openAddContactView"
-            classes: ["left-button", "add-contact-button"]
-        rightButton:
-            content: "query account"
-            event: "openAccountView"
-            classes: ["right-button", "query-account-button"]
+        @viewInFocus = @rootContentView
 
 AppController::show = (view, options = {}) ->
     if options.on

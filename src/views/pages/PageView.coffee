@@ -13,9 +13,9 @@ class PageView extends XView
 
     name: "page"
     hide:  ->
-        @progress.set 0, @transition
-    focus: ->
         @progress.set 1, @transition
+    focus: ->
+        @progress.set 0, @transition
 
 module.exports = PageView
 
