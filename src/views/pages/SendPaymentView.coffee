@@ -6,7 +6,9 @@ Transform = require "famous/core/Transform"
 class SendPaymentView extends PageView
     constructor: ->
         super
-        content = new Surface content: "go home", properties: backgroundColor: 'purple'
+        content = new Surface
+            classes: ['send-payment-background']
+
         contentModifier = new Modifier
             transform: =>
                 x =  @progress.get()

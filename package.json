@@ -19,7 +19,7 @@
     "android-build": "cd Build-Android && ./cordova/build --debug",
     "android-deploy": "adb install -r Build-Android/bin/XRP-debug.apk",
 
-    "serve": "serve --compress -p 3333 Build/www",
+    "serve": "serve --compress -p 3333 static/",
     "start-dev": "npm run serve & npm run watch",
     "lint-eslint": "eslint src/",
     "lint-jscs": "jscs src/",

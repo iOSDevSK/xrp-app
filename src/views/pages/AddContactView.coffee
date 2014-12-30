@@ -4,24 +4,29 @@ Transform = require "famous/core/Transform"
 PageView = require "./PageView"
 
 class AddContactView extends PageView
-    name: "addContactView"
     constructor: ->
         super
-        @background = new Surface
+        background = new Surface
             classes: ["add-contact-view-background"]
+            properties: backgroundColor: 'blue'
 
-        @positioningModifier = new Modifier
+        backgroundPositioningModifier = new Modifier
             transform: =>
-                x = innerWidth * (@progress.get() - 1)
-                return Transform.translate x, 0, 0
+                x = @progress.get()
+                x *= -@options.xOffset
+                return Transform.translate x, 0, 10
 
-        @add @positioningModifier
-        .add new Modifier transform: Transform.translate 0, 0, -1
-        .add @background
+        @add backgroundPositioningModifier
+        .add background
 
         @label = new Surface
             classes: ["add-contact-view-label"]
             content: "Add Contact View"
+
+        background.on "click", => @broadcast "openHomeView"
+
+AddContactView.DEFAULT_OPTIONS =
+    xOffset: innerWidth
 
 module.exports = AddContactView
 

@@ -113,6 +113,7 @@ SliderSelector::reset = ({hasTransition, velocity} = {velocity: 0}) ->
 
     @offset.set 0, transition
     @dragOffset.set 0, transition
+    @unquiet()
 
 SliderSelector.TOP = 0
 SliderSelector.BOTTOM = 1
@@ -125,7 +126,7 @@ SliderSelector.DEFAULT_OPTIONS =
         dimensions: [1,2]
     sliding:
         touchOffset: 60
-        offsetThreshold: 180
+        offsetThreshold: 240
         velocityThreshold: 2
         touchTransition:
            method: "spring"
