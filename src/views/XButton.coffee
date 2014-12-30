@@ -7,6 +7,8 @@ class XButton extends XView
   constructor: (options) ->
     super options
 
+    @options.classes.push "button"
+
     surfaceType = if @options.ImageSurface then ImageSurface else Surface
     @content = new surfaceType @options
     @content.on "click", (e) =>
@@ -19,8 +21,8 @@ class XButton extends XView
 
 XButton.DEFAULT_OPTIONS =
   content: "Button"
-  classes: ["eb-button"]
-  eventName: "eb-button-clicked"
+  classes: [] #default CSS class added on ln#10
+  eventName: "button-clicked"
   ImageSurface: no
 
 module.exports = XButton

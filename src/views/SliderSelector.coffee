@@ -15,10 +15,8 @@ class SliderSelector extends XView
 
         @offset = offset = new Transitionable 0
 
-#@leftButton = new XButton options.leftButton
-#@rightButton = new XButton options.rightButton
-        @leftButton = new XButton properties: backgroundColor: "red"
-        @rightButton = new XButton properties: backgroundColor: "blue"
+        @leftButton = new XButton options.leftButton
+        @rightButton = new XButton options.rightButton
 
         @subscribe leftSync = new TouchSync @options.sync
         @subscribe rightSync = new TouchSync @options.sync
@@ -46,10 +44,8 @@ class SliderSelector extends XView
                 x = offset.get()
                 if x > @options.sliding.offsetThreshold
                     @broadcast options.leftButton.event
-                    @reset
                 if x < -@options.sliding.offsetThreshold
                     @broadcast options.rightButton.event
-                    @reset
                 Transform.translate x, 0, 0
 
         leftSync.on "start", =>
@@ -77,17 +73,20 @@ class SliderSelector extends XView
             if @checkVelocity e then @broadcast options.rightButton.event
 
         layoutNode = @add layoutModifier
-        layoutNode.add leftModifier
-                  .add @leftButton
-        layoutNode.add rightModifier
-                  .add @rightButton
+        leftNode = layoutNode.add leftModifier
+        leftNode.add new Modifier origin: [1, 0], align: [1, 0], size: [innerWidth, undefined]
+                .add @leftButton
+        rightNode = layoutNode.add rightModifier
+        rightNode.add @rightButton
 
     checkVelocity: (e) ->
+        @reset e
         v_max = @options.sliding.velocityThreshold
-        if v_max > e.velocity > -v_max then @reset() else true
+        #v_max > e.velocity > -v_max then @reset(e) else true
+        v_max > e.velocity > -v_max
                 
-    reset: ->
-        @offset.set 0, @options.sliding.touchTransition
+    reset: (e = {velocity: 0}) ->
+        @offset.set 0, method: "spring", period: 400, dampingRatio: 0.6, velocity: -e.velocity
         console.log "reset offset transitionable"
         false
 
@@ -105,7 +104,9 @@ SliderSelector.DEFAULT_OPTIONS =
         offsetThreshold: 180
         velocityThreshold: 2
         touchTransition:
-           method: "snap"
+           method: "spring"
+           period: 300
+           dampingRatio: 0.5
 
 module.exports = SliderSelector
 

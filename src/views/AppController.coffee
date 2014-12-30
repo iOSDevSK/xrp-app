@@ -33,7 +33,7 @@ class AppController extends XView
         # AddContactView for associating an entry in the phone's
         # contacts with a public key
         @addSubView @addContactView = new AddContactView
-        @show @addContactView, on: "showContactView"
+        @show @addContactView, on: "openAddContactView"
 
         # QueryAccountView for finding the balance of a public key
         @addSubView @queryAccountView = new QueryAccountView
@@ -42,7 +42,7 @@ class AppController extends XView
         # SendPaymentView for sending money from app's wallet to
         # a public key or a contact
         @addSubView @sendPaymentView = new SendPaymentView
-        @show @sendPaymentView, on: "openPaymentView"
+        @show @sendPaymentView, on: "openSendPaymentView"
 
         # WalletView for exporting secret key or changing pin
         @addSubView @walletView = new WalletView
@@ -59,27 +59,28 @@ AppController.DEFAULT_OPTIONS =
         leftButton:
             content: "wallet"
             event: "openWalletView"
-            classes: ["button", "wallet-button"]
+            classes: ["left-button", "wallet-button"]
         rightButton:
             content: "send payment"
             event: "openSendPaymentView"
-            classes: ["button", "send-payment-button"]
+            classes: ["right-button", "send-payment-button"]
 
     lowerSelector:
         placement: SliderSelector.BOTTOM
         leftButton:
             content: "add contact"
             event: "openAddContactView"
-            classes: ["button", "add-contact-button"]
+            classes: ["left-button", "add-contact-button"]
         rightButton:
             content: "query account"
             event: "openAccountView"
-            classes: ["button", "query-account-button"]
+            classes: ["right-button", "query-account-button"]
 
 AppController::show = (view, options = {}) ->
     if options.on
-        @_eventInput.on "openWalletView", @show.bind(@, view)
+        @_eventInput.on options.on, @show.bind(@, view)
     else
+        console.log "show", view, options
         view.focus()
         if @viewInFocus then @viewInFocus.hide()
         @viewInFocus = view
