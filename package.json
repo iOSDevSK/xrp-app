@@ -8,6 +8,7 @@
 
     "start": "npm run build && npm run cordova && npm run android",
     "build": "browserify -t coffeeify --extension='.coffee' src/index.coffee -t jadeify -t stylify -t cssify -t brfs > static/bundle.js",
+    "watch": "watchify -t coffeeify --extension='.coffee' src/index.coffee -t jadeify -t stylify -t cssify -t brfs -o static/bundle.js --debug --verbose",
 
     "cordova": "npm run cordova-copy && npm run cordova-build",
     "cordova-copy": "cp -R static/ Build/www/",
@@ -18,7 +19,6 @@
     "android-build": "cd Build-Android && ./cordova/build --debug",
     "android-deploy": "adb install -r Build-Android/bin/XRP-debug.apk",
 
-    "watch": "watchify -t coffeeify --extension='.coffee' src/index.coffee -t jadeify -t stylify -t cssify -t brfs -o Build/www/bundle.js --debug --verbose",
     "serve": "serve --compress -p 3333 Build/www",
     "start-dev": "npm run serve & npm run watch",
     "lint-eslint": "eslint src/",
