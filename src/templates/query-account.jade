@@ -1,0 +1,14 @@
+.margin50.white.center
+    h1.light Query an Account
+    p
+     | Tap the screen to scan a barcode to get information about that account
+
+    if accountToShow
+        #qr-query.qr-account-detail.qr
+        .spacer50
+        span
+         | Balance
+        span
+         = "  " + accountToShow.balance + "XRP"
+    else
+        #qr-query.qr-account-default.qr
