@@ -8,7 +8,6 @@ class AddContactView extends PageView
         super
         background = new Surface
             classes: ["add-contact-view-background"]
-            properties: backgroundColor: 'blue'
 
         backgroundPositioningModifier = new Modifier
             transform: =>
@@ -16,14 +15,18 @@ class AddContactView extends PageView
                 x *= -@options.xOffset
                 return Transform.translate x, 0, 10
 
-        @add backgroundPositioningModifier
-        .add background
+        @node = @add backgroundPositioningModifier
+        @node.add background
 
         @label = new Surface
-            classes: ["add-contact-view-label"]
             content: "Add Contact View"
+            classes: ["add-contact-view-label"]
 
-        background.on "click", => @broadcast "openHomeView"
+        @node.add @label
+
+        @subscribe background
+        @subscribe @label
+        @listen "click", => @broadcast "openHomeView"
 
 AddContactView.DEFAULT_OPTIONS =
     xOffset: innerWidth

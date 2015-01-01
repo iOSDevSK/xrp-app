@@ -20,7 +20,7 @@ class XButton extends XView
     @subscribe @content
 
 XButton.DEFAULT_OPTIONS =
-  content: "Button"
+  content: ""
   classes: [] #default CSS class added on ln#10
   eventName: "button-clicked"
   ImageSurface: no

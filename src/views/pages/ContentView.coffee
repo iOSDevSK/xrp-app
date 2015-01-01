@@ -5,6 +5,12 @@ Surface = require "famous/core/Surface"
 Transitionable = require "famous/transitions/Transitionable"
 Transform = require "famous/core/Transform"
 
+#Slider labels
+AddContactLabel = require "./labels/AddContactLabel"
+SendPaymentLabel = require "./labels/SendPaymentLabel"
+WalletLabel = require "./labels/WalletLabel"
+QueryAccountLabel = require "./labels/QueryAccountLabel"
+
 class ContentView extends PageView
     constructor: ->
         super
@@ -55,7 +61,7 @@ class ContentView extends PageView
 
         content = new Surface @options.content
         contentModifier = new Modifier
-            transform: => Transform.translate 0, 0, -300 * @progress.get()
+            transform: => Transform.translate 0, 0, -1000 * @progress.get()
 
         @add contentModifier
         .add content
@@ -98,23 +104,23 @@ ContentView.DEFAULT_OPTIONS =
 
     upperSelector:
         placement: SliderSelector.TOP
+        leftLabelMaker: WalletLabel
         leftButton:
-            content: "wallet"
             event: "openWalletView"
             classes: ["left-button", "wallet-button"]
+        rightLabelMaker: SendPaymentLabel
         rightButton:
-            content: "send payment"
             event: "openSendPaymentView"
             classes: ["right-button", "send-payment-button"]
 
     lowerSelector:
         placement: SliderSelector.BOTTOM
+        leftLabelMaker: AddContactLabel
         leftButton:
-            content: "add contact"
             event: "openAddContactView"
             classes: ["left-button", "add-contact-button"]
+        rightLabelMaker: QueryAccountLabel
         rightButton:
-            content: "query account"
             event: "openAccountView"
             classes: ["right-button", "query-account-button"]
 
