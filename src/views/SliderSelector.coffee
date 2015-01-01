@@ -155,7 +155,6 @@ SliderSelector::_unquietRight = ->
 SliderSelector::checkVelocity = ({velocity}) ->
     @reset velocity: velocity
     v_max = @options.sliding.velocityThreshold
-    console.log velocity, v_max < velocity or velocity < -v_max
     v_max < velocity or velocity < -v_max
                 
 SliderSelector::reset = ({hasTransition, velocity} = {velocity: 0}) ->

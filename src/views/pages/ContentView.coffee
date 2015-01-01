@@ -11,6 +11,8 @@ SendPaymentLabel = require "./labels/SendPaymentLabel"
 WalletLabel = require "./labels/WalletLabel"
 QueryAccountLabel = require "./labels/QueryAccountLabel"
 
+newWalletTemplate = require "../../templates/new-wallet.jade"
+
 class ContentView extends PageView
     constructor: ->
         super
@@ -59,14 +61,28 @@ class ContentView extends PageView
         @add filterModifier
         .add filter
 
-        content = new Surface @options.content
-        contentModifier = new Modifier
+        contentBackground = new Surface @options.contentBackground
+        positioningModifier = new Modifier
+            origin: [0.5, 0.5]
+            align: [0.5, 0.5]
             transform: => Transform.translate 0, 0, -1000 * @progress.get()
 
-        @add contentModifier
-        .add content
+        contentNode = @add positioningModifier
+        contentNode.add contentBackground
 
-        window.cv = @
+        contentPositioningModifier = new Modifier
+            size: [innerWidth, innerWidth]
+            transform: Transform.translate 0, 0, 1
+
+        @content = new Surface
+            content: newWalletTemplate()
+            classes: ['content']
+
+        contentNode.add contentPositioningModifier
+                   .add @content
+
+ContentView::setContent = (data) ->
+    @content.setContent data
 
 ContentView::showSliders = ->
     @sliderTransitionable.set 0, @transition, => @_subscribeSliders()
@@ -100,9 +116,12 @@ ContentView::transition = duration: 800, curve: 'easeOut'
 
 ContentView.DEFAULT_OPTIONS =
 
+    height: innerHeight - 2 * SliderSelector.DEFAULT_OPTIONS.height
+
     sliderOffsetMultiplier: 2
 
     upperSelector:
+        height: SliderSelector.DEFAULT_OPTIONS.height + 20
         placement: SliderSelector.TOP
         leftLabelMaker: WalletLabel
         leftButton:
@@ -127,8 +146,8 @@ ContentView.DEFAULT_OPTIONS =
     filter:
         classes: ['midground-filter']
 
-    content:
-        classes: ['content']
+    contentBackground:
+        classes: ['content-background']
 
     transition:
         method: "spring"
