@@ -12,7 +12,7 @@ AppController = require "./views/AppController"
 
 # Set debug or production environment
 #window.__environment = environment = "debug"
-window.__environment = environment = "chrome"
+window.__environment = environment = "debug"
 window.log = require("./log")(environment)
 
 # Create context and set Perspective
@@ -27,6 +27,10 @@ start = ->
 switch environment
     when "debug"
         document.addEventListener "deviceready", start, false
+    when "production"
+        document.addEventListener "deviceready", start, false
     when "chrome"
+        window.cordova = plugins: barcodeScanner: scan: (s, f) ->
+            s text: "ripple://rfemvFrpCAPc4hUa1v8mPRYdmaCqR1iFpe"
         start()
 

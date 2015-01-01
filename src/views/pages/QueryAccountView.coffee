@@ -4,6 +4,8 @@ Modifier = require "famous/core/Modifier"
 Transform = require "famous/core/Transform"
 Timer = require "famous/utilities/Timer"
 XRP = require "xrp-app-lib"
+XRP.accountFromURI = ->
+    "rfemvFrpCAPc4hUa1v8mPRYdmaCqR1iFpe"
 
 home = require "../../templates/home-button.jade"
 queryAccount = require "../../templates/query-account.jade"
@@ -48,18 +50,22 @@ class QueryAccountView extends PageView
         @subscribe background
         @subscribe @titleLabel
 
-        @listen "click", @query
+        @listen "touchstart", @query
         @code = null
 
         @updateQRCode "rfemvFrpCAPc4hUa1v8mPRYdmaCqR1iFpe", "#7f8c8d"
 
 QueryAccountView::query = ->
-    acc = XRP.importAccountFromAddress "rfemvFrpCAPc4hUa1v8mPRYdmaCqR1iFpe"
-    acc.updateBalance()
-       .then (b) =>
-           @clearNodes =>
-               @titleLabel.setContent queryAccount accountToShow: balance: b
-               @updateQRCode acc.publicKey
+    failure = @error.bind @, "Could not scan correctly"
+    success = ({text}) =>
+        acc = XRP.importAccountFromAddress XRP.accountFromURI text
+        acc.updateBalance()
+        .then (b) =>
+            @clearNodes =>
+                @titleLabel.setContent queryAccount accountToShow: balance: b
+                @updateQRCode acc.publicKey
+
+    cordova.plugins.barcodeScanner.scan success, failure
 
 QueryAccountView::clearNodes = (cb) ->
     r = document.getElementById "qr-query"
