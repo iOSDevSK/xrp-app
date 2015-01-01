@@ -12,6 +12,7 @@ WalletLabel = require "./labels/WalletLabel"
 QueryAccountLabel = require "./labels/QueryAccountLabel"
 
 newWalletTemplate = require "../../templates/new-wallet.jade"
+defaultContentTemplate = require "../../templates/default-content.jade"
 
 class ContentView extends PageView
     constructor: ->
@@ -78,11 +79,16 @@ class ContentView extends PageView
             content: newWalletTemplate()
             classes: ['content']
 
+        @content.on "click", => @broadcast "content-clicked"
+
         contentNode.add contentPositioningModifier
                    .add @content
 
 ContentView::setContent = (data) ->
     @content.setContent data
+
+ContentView::showDefaultContent = ->
+    @setContent defaultContentTemplate()
 
 ContentView::showSliders = ->
     @sliderTransitionable.set 0, @transition, => @_subscribeSliders()

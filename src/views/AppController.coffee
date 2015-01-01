@@ -43,6 +43,8 @@ class AppController extends XView
 
         @viewInFocus = @rootContentView
 
+        @listen "content-clicked", -> @rootContentView.showDefaultContent()
+
 AppController::show = (view, options = {}) ->
     if options.on
         @_eventInput.on options.on, @show.bind @, view
