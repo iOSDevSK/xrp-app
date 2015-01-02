@@ -37,7 +37,7 @@ class QueryAccountView extends PageView
         node.add homeButtonModifier
             .add homeButton
 
-        homeButton.on "click", => @broadcast "openHomeView"
+        homeButton.on "touchstart", => @broadcast "openHomeView"
 
         @titleLabel = new Surface content: queryAccount()
         titleModifier = new Modifier
@@ -50,22 +50,22 @@ class QueryAccountView extends PageView
         @subscribe background
         @subscribe @titleLabel
 
-        @listen "touchstart", @query
-        @code = null
+        @listen "touchstart", @scanQuery
 
-        Timer.after @updateQRCode.bind(@), 2
+        @updateQRCode()
 
-QueryAccountView::query = ->
-    QR.scanRippleURI()
-      .then (data) => QR.clearNodes(@options.id).then -> data
-      .then (data) => @resolveQuery data
-      .catch (e)   => @failedQuery e
+QueryAccountView::scanQuery = ->
+    QR.scanRippleURI().then (data) => @openQuery data
+
+QueryAccountView::openQuery = (data) ->
+    QR.clearNodes(@options.id)
+      .then  => @resolveQuery data
+      .catch => @failedQuery e
 
 QueryAccountView::resolveQuery = ({account, parsedURI}) ->
-    account.updateBalance()
-           .then =>
-               @titleLabel.setContent queryAccount accountToShow: balance: account.balance
-               @updateQRCode uri: parsedURI, color: "#000"
+    account.updateBalance().then =>
+        @titleLabel.setContent queryAccount account: balance: account.balance
+        @updateQRCode uri: parsedURI, color: "#000"
 
 QueryAccountView::failedQuery = (e) ->
     console.error "something broke", e
@@ -74,20 +74,12 @@ QueryAccountView::failedQuery = (e) ->
 
 QueryAccountView::updateQRCode = ({uri, color} = color: "#34495e") ->
     unless uri? then uri = "ripple://rfemvFrpCAPc4hUa1v8mPRYdmaCqR1iFpe"
-    _encode = (div) ->
-        QR.encode div,
-            text: uri
-            width: 180
-            height: 180
-            colorDark: color
-
-    Timer.after _encode.bind(null, "qr-query"), 10
+    divID = @options.id
+    _ = -> QR.encode divID, text: uri, width: 180, height: 180, colorDark: color
+    Timer.after _, 2
       
 QueryAccountView.DEFAULT_OPTIONS =
     xOffset: innerWidth
     id: "qr-query"
-
-QueryAccountView::Error = class QueryAccountViewError extends PageView::Error
-QueryAccountView::Exit  = class QueryAccountViewExitError extends PageView::Error
 
 module.exports = QueryAccountView

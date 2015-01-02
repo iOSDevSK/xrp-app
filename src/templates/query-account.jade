@@ -11,12 +11,12 @@
     p
      | scan a QR code of a ripple address 
 
-    if accountToShow
+    if account
         #qr-query.qr-account-detail.qr
-        .spacer50
-        span
-         | Balance
-        span
-         = "  " + accountToShow.balance + "XRP"
+        p
+            span
+             | Balance
+            span
+             = "  " + account.balance + "XRP"
     else
         #qr-query.qr-account-default.qr
