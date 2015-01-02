@@ -5,6 +5,7 @@ Transform = require "famous/core/Transform"
 Timer = require "famous/utilities/Timer"
 Promise = require "bluebird"
 XRP = require "xrp-app-lib"
+QR = require "../../lib/qr"
 
 home = require "../../templates/home-button.jade"
 queryAccount = require "../../templates/query-account.jade"
@@ -52,67 +53,41 @@ class QueryAccountView extends PageView
         @listen "touchstart", @query
         @code = null
 
-        @updateQRCode()
+        Timer.after @updateQRCode.bind(@), 2
 
 QueryAccountView::query = ->
-    success = (_) => @resolveQuery _
-    failure = => @failedQuery()
-    cordova.plugins.barcodeScanner.scan success, failure
+    QR.scanRippleURI()
+      .then (data) => QR.clearNodes(@options.id).then -> data
+      .then (data) => @resolveQuery data
+      .catch (e)   => @failedQuery e
 
-QueryAccountView::resolveQuery = ({text}) ->
-    Promise.resolve (text)
-           .then (_text) ->
-               data = XRP.decodeURI _text
-
-           .then (data) =>
-               address = data.address or data.to or throw new QueryAccountView::Exit
-               XRP.importAccountFromAddress address
-
-           .then (account) ->
-               account.updateBalance().then -> account
-
-           .then (account) =>
-               @clearNodes().then -> account
-
-           .then (account) =>
+QueryAccountView::resolveQuery = ({account, parsedURI}) ->
+    account.updateBalance()
+           .then =>
                @titleLabel.setContent queryAccount accountToShow: balance: account.balance
-               @updateQRCode account.publicKey
+               @updateQRCode uri: parsedURI, color: "#000"
 
-           .catch QueryAccountView::Exit, ->
-               @failedQuery()
+QueryAccountView::failedQuery = (e) ->
+    console.error "something broke", e
+    @titleLabel.setContent queryAccount error: yes
+    @updateQRCode()
 
-           .catch (e) =>
-               console.error "something else went wrong", e
-               @failedQuery()
+QueryAccountView::updateQRCode = ({uri, color} = color: "#34495e") ->
+    unless uri? then uri = "ripple://rfemvFrpCAPc4hUa1v8mPRYdmaCqR1iFpe"
+    _encode = (div) ->
+        QR.encode div,
+            text: uri
+            width: 180
+            height: 180
+            colorDark: color
 
-QueryAccountView::failedQuery = ->
-    @clearNodes().then =>
-        @titleLabel.setContent queryAccount error: yes
-        @updateQRCode()
-
-QueryAccountView::clearNodes = ->
-    r = document.getElementById "qr-query"
-    while r.firstChild
-        r.removeChild r.firstChild
-    Promise.resolve()
-
-QueryAccountView::updateQRCode = (key = "rfemvFrpCAPc4hUa1v8mPRYdmaCqR1iFpe",
-                                  color = "#7f8c8d") ->
-    Timer.after @_updateQRCode.bind(@, key, color), 2
-
-QueryAccountView::_updateQRCode = (key, color = "#000") ->
-    @code = new QRCode(document.getElementById("qr-query"),
-        text: "ripple://" + key
-        width: 180
-        height: 180
-        colorDark: color
-    )
-
+    Timer.after _encode.bind(null, "qr-query"), 10
+      
 QueryAccountView.DEFAULT_OPTIONS =
     xOffset: innerWidth
+    id: "qr-query"
 
 QueryAccountView::Error = class QueryAccountViewError extends PageView::Error
 QueryAccountView::Exit  = class QueryAccountViewExitError extends PageView::Error
 
 module.exports = QueryAccountView
-

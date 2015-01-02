@@ -24,6 +24,6 @@ if window.cordova?
     document.addEventListener "deviceready", start, false
 else
     window.cordova = plugins: barcodeScanner: scan: (s, f) ->
-        s text: "rip://rfemvFrpCAPc4hUa1v8mPRYdmaCqR1iFpe"
-    start()
+        s text: "ripple://rfemvFrpCAPc4hUa1v8mPRYdmaCqR1iFpe"
+    document.addEventListener "DOMContentLoaded", start, false
 
