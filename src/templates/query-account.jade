@@ -1,7 +1,15 @@
 .margin50.white.center
     h1.light Query an Account
+
+    // include partials
+    if error
+        p
+         | Error: Could not properly parse QR code
+
     p
-     | Tap the screen to scan a barcode to get information about that account
+     | tap the screen 
+    p
+     | scan a QR code of a ripple address 
 
     if accountToShow
         #qr-query.qr-account-detail.qr

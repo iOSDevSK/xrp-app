@@ -7,13 +7,9 @@ SpringTransition = require "famous/transitions/SpringTransition"
 SnapTransition = require "famous/transitions/SnapTransition"
 Transitionable.registerMethod "spring", SpringTransition
 Transitionable.registerMethod "snap", SnapTransition
+window._xrp = require "xrp-app-lib"
 
 AppController = require "./views/AppController"
-
-# Set debug or production environment
-#window.__environment = environment = "debug"
-window.__environment = environment = "debug"
-window.log = require("./log")(environment)
 
 # Create context and set Perspective
 start = ->
@@ -24,13 +20,10 @@ start = ->
     # Add app to the mainContext
     mainContext.add new AppController
 
-switch environment
-    when "debug"
-        document.addEventListener "deviceready", start, false
-    when "production"
-        document.addEventListener "deviceready", start, false
-    when "chrome"
-        window.cordova = plugins: barcodeScanner: scan: (s, f) ->
-            s text: "ripple://rfemvFrpCAPc4hUa1v8mPRYdmaCqR1iFpe"
-        start()
+if window.cordova?
+    document.addEventListener "deviceready", start, false
+else
+    window.cordova = plugins: barcodeScanner: scan: (s, f) ->
+        s text: "rip://rfemvFrpCAPc4hUa1v8mPRYdmaCqR1iFpe"
+    start()
 
