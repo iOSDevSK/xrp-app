@@ -7,7 +7,6 @@ SpringTransition = require "famous/transitions/SpringTransition"
 SnapTransition = require "famous/transitions/SnapTransition"
 Transitionable.registerMethod "spring", SpringTransition
 Transitionable.registerMethod "snap", SnapTransition
-window._xrp = require "xrp-app-lib"
 
 AppController = require "./views/AppController"
 
