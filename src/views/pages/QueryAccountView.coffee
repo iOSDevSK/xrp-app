@@ -5,6 +5,7 @@ Transform = require "famous/core/Transform"
 Timer = require "famous/utilities/Timer"
 XRP = require "xrp-app-lib"
 QR = require "../../lib/qr"
+helpers = require "../../lib/helpers"
 
 home = require "../../templates/home-button.jade"
 queryAccount = require "../../templates/query-account.jade"
@@ -54,17 +55,24 @@ class QueryAccountView extends PageView
         @updateQRCode()
 
 QueryAccountView::scanQuery = ->
-    success = @openQuery.bind @
-    QR.scanRippleURI().then success
-      .catch QR::CloseScannerError, =>
-          @setContent error: yes
-          @updateQRCode()
-      .catch QR::ScannerNotAvailableError, =>
-          @setContent cameraNotEnabled: yes
-          @updateQRCode()
+    QR.scanRippleURI()
+      .then @openQuery.bind @
+      .catch QR.CloseScannerError, =>
+          @setContent error: "closedScanner"
+          @resetDefaultQRCode()
+      .catch QR.ScannerNotAvailableError, =>
+          @setContent error: "scannerNotAvailable"
+          @resetDefaultQRCode()
+      .catch XRP.Errors.URIError, =>
+          @setContent error: "parseError"
+          @resetDefaultQRCode()
 
 QueryAccountView::setContent = (options) ->
     @titleLabel.setContent queryAccount options
+
+QueryAccountView::resetDefaultQRCode = ->
+    QR.clearNodes @options.id
+      .then => @updateQRCode()
 
 QueryAccountView::openQuery = (data) ->
     console.log "open query", data
@@ -73,11 +81,17 @@ QueryAccountView::openQuery = (data) ->
 
 QueryAccountView::resolveQuery = ({account, parsedURI}) ->
     console.log "resolve query", account, parsedURI
-    account.updateBalance().then =>
-        console.log "balance updated"
-        @setContent account: balance: account.balance
-        @updateQRCode uri: parsedURI, color: "#000"
-    # possibly unhandled exception
+    account.updateBalance()
+           .then =>
+               console.log "balance updated"
+               @setContent
+                 account:
+                   balance: helpers.truncateThousandths account.balance
+               @updateQRCode uri: parsedURI, color: "#000"
+           .catch XRP.Errors.NetworkError, (e) =>
+               console.log "network not available"
+               @setContent error: "networkError"
+               @updateQRCode()
 
 QueryAccountView::updateQRCode = ({uri, color} = color: "#34495e") ->
     unless uri? then uri = "ripple://rfemvFrpCAPc4hUa1v8mPRYdmaCqR1iFpe"

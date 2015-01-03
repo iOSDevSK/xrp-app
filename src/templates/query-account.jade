@@ -2,25 +2,30 @@
     h1.light query account 
 
     if error
-        p
-         | Error: Could not properly parse QR code
 
-    if cameraNotEnabled
-        p.camera-not-enabled
+      - if (error === "parseError")
+        p.error-messsage
+         | cannot parse QR code
+
+      - if (error === "scannerNotAvailable")
+        p.error-message
          | camera not enabled
-         | cannot query accounts with QR
+
+      - if (error === "networkError")
+        p.error-message
+         | cannot connect to network
+
+      - if (error === "closedScanner")
+        p.error-message
+         | scanner closed
 
     p
-     | tap the screen 
-    p
-     | scan a QR code of a ripple address 
+     | tap the screen, scan a QR ripple address 
 
     if account
         #qr-query.qr-account-detail.qr
+        p Balance: XRP
         p
-            span
-             | Balance
-            span
-             = "  " + account.balance + "XRP"
+            = account.balance
     else
         #qr-query.qr-account-default.qr

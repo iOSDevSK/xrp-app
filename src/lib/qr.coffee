@@ -3,9 +3,7 @@ XRP = require "xrp-app-lib"
 Timer = require "famous/utilities/Timer"
 {errorConstructor} = require "./helpers"
 
-Promise.longStackTraces()
-
-class QR
+QR =
     scanRippleURI: ->
         @scan()
         .then (data) ->
@@ -18,7 +16,7 @@ class QR
 
             address = data.address or
                       data.to      or
-                      throw new QR::Error
+                      throw new QR.Error
             data.account = XRP.importAccountFromAddress address
             data
 
@@ -26,14 +24,14 @@ class QR
         new Promise (resolve, reject) ->
             result = (data) ->
                 if data.cancelled is 0 then resolve data
-                else reject new QR::CloseScannerError
-            notAvailable = -> reject new QR::ScannerNotAvailableError
+                else reject new QR.CloseScannerError
+            notAvailable = -> reject new QR.ScannerNotAvailableError
             cordova.plugins.barcodeScanner.scan result, notAvailable
 
     encode: (divOrDivID, options = width: 180, height: 180, colorDark: "#000") ->
         div = @_$ divOrDivID
         if options.text? then Promise.resolve new QRCode div, options
-        else Promise.reject new QR::ParamsError "no uri specified"
+        else Promise.reject new QR.ParamsError "no uri specified"
 
     encodeRippleURI: (divID, data, options) ->
         Promise.resolve()
@@ -47,7 +45,7 @@ class QR
             div = @$ divOrDivID
         else if divOrDivID instanceof HTMLElement
             div = divOrDivID
-        else throw new QR::ParamsError "bad input type"
+        else throw new QR.ParamsError "bad input type"
 
     clearNodes: (divOrDivID) ->
         div = @_$ divOrDivID
@@ -55,12 +53,12 @@ class QR
             while div.firstChild then div.removeChild div.firstChild
             Promise.resolve div
         else
-            Promise.reject new QR::ParamsError "dom fragment does not exist"
+            Promise.reject new QR.ParamsError "dom fragment does not exist"
 
-QR::ScanError = errorConstructor "ScanError"
-QR::ParamsError = errorConstructor "ParamsError"
-QR::CloseScannerError = errorConstructor "CloseScannerError"
-QR::ScannerNotAvailableError = errorConstructor "ScannerNotAvailableError"
+QR.ScanError = errorConstructor "ScanError"
+QR.ParamsError = errorConstructor "ParamsError"
+QR.CloseScannerError = errorConstructor "CloseScannerError"
+QR.ScannerNotAvailableError = errorConstructor "ScannerNotAvailableError"
 
-module.exports = new QR
+module.exports = QR
 
