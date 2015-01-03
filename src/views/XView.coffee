@@ -1,4 +1,5 @@
 View = require "famous/core/view"
+{errorConstructor} = require "../lib/helpers"
 
 class XView extends View
     constructor: (options) ->
@@ -55,10 +56,7 @@ XView::pipeThrough = (events) ->
 XView::pipeThroughTouchEvents = ->
     @pipeThrough ["touchstart", "touchmove", "touchend"]
 
-XView::Error = class XViewError extends Error
-    constructor: (@message) ->
-        @name = "XViewError"
-        Error.captureStackTrace(this, XViewError)
+XView::Error = errorConstructor "XViewError"
 
 XView::error = (err) ->
   throw new XView::Error err

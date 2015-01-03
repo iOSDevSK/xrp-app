@@ -5,3 +5,4 @@ Build/*
 Build-Android/*
 famousInternal/
 npm-debug.log
+assets/

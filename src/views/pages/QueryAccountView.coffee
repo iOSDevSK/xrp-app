@@ -3,7 +3,6 @@ Surface = require "famous/core/Surface"
 Modifier = require "famous/core/Modifier"
 Transform = require "famous/core/Transform"
 Timer = require "famous/utilities/Timer"
-Promise = require "bluebird"
 XRP = require "xrp-app-lib"
 QR = require "../../lib/qr"
 
@@ -55,27 +54,42 @@ class QueryAccountView extends PageView
         @updateQRCode()
 
 QueryAccountView::scanQuery = ->
-    QR.scanRippleURI().then (data) => @openQuery data
+    success = @openQuery.bind @
+    QR.scanRippleURI().then success
+      .catch QR::CloseScannerError, =>
+          @setContent error: yes
+          @updateQRCode()
+      .catch QR::ScannerNotAvailableError, =>
+          @setContent cameraNotEnabled: yes
+          @updateQRCode()
+
+QueryAccountView::setContent = (options) ->
+    @titleLabel.setContent queryAccount options
 
 QueryAccountView::openQuery = (data) ->
-    QR.clearNodes(@options.id)
-      .then  => @resolveQuery data
-      .catch => @failedQuery e
+    console.log "open query", data
+    QR.clearNodes @options.id
+      .then => @resolveQuery data
 
 QueryAccountView::resolveQuery = ({account, parsedURI}) ->
+    console.log "resolve query", account, parsedURI
     account.updateBalance().then =>
-        @titleLabel.setContent queryAccount account: balance: account.balance
+        console.log "balance updated"
+        @setContent account: balance: account.balance
         @updateQRCode uri: parsedURI, color: "#000"
-
-QueryAccountView::failedQuery = (e) ->
-    console.error "something broke", e
-    @titleLabel.setContent queryAccount error: yes
-    @updateQRCode()
+    # possibly unhandled exception
 
 QueryAccountView::updateQRCode = ({uri, color} = color: "#34495e") ->
     unless uri? then uri = "ripple://rfemvFrpCAPc4hUa1v8mPRYdmaCqR1iFpe"
+    console.log "updating qr code", uri
+
     divID = @options.id
-    _ = -> QR.encode divID, text: uri, width: 180, height: 180, colorDark: color
+    console.log divID
+
+    _ = ->
+        console.log "callback to encode qr"
+        QR.encode divID, text: uri, width: 180, height: 180, colorDark: color
+
     Timer.after _, 2
       
 QueryAccountView.DEFAULT_OPTIONS =

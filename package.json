@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha --compilers coffee:coffee-script/register test/**/*",
     "start": "npm run build && npm run cordova && npm run android",
-    "build": "browserify -t coffeeify --extension='.coffee' src/index.coffee -t jadeify -t stylify -t cssify -t brfs | uglifyjs > static/bundle.js",
+    "build": "browserify -t coffeeify --extension='.coffee' src/index.coffee -t jadeify -t stylify -t cssify -t brfs > static/bundle.js",
     "watch": "watchify -t coffeeify --extension='.coffee' src/index.coffee -t jadeify -t stylify -t cssify -t brfs -o static/bundle.js --debug --verbose",
     "cordova": "npm run cordova-copy && npm run cordova-build",
     "cordova-copy": "cp -R static/ Build/www/",

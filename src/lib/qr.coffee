@@ -1,13 +1,21 @@
 Promise = require "bluebird"
 XRP = require "xrp-app-lib"
 Timer = require "famous/utilities/Timer"
+{errorConstructor} = require "./helpers"
+
+Promise.longStackTraces()
 
 class QR
     scanRippleURI: ->
         @scan()
+        .then (data) ->
+            console.log "scan successful", data
+            data
         .then ({text}) ->
             data = XRP.decodeURI text
         .then (data) ->
+            console.log "uri decoded", data
+
             address = data.address or
                       data.to      or
                       throw new QR::Error
@@ -15,9 +23,14 @@ class QR
             data
 
     scan: ->
-        new Promise (res, rej) -> cordova.plugins.barcodeScanner.scan res, rej
+        new Promise (resolve, reject) ->
+            result = (data) ->
+                if data.cancelled is 0 then resolve data
+                else reject new QR::CloseScannerError
+            notAvailable = -> reject new QR::ScannerNotAvailableError
+            cordova.plugins.barcodeScanner.scan result, notAvailable
 
-    encode: (divOrDivID, options = width: 180, height: 180, color: "#foo") ->
+    encode: (divOrDivID, options = width: 180, height: 180, colorDark: "#000") ->
         div = @_$ divOrDivID
         if options.text? then Promise.resolve new QRCode div, options
         else Promise.reject new QR::ParamsError "no uri specified"
@@ -27,8 +40,7 @@ class QR
                .then ->       uri = XRP.encodeURI data
                .then (uri) => @encode divID, uri, options
 
-    $: (idSelector) ->
-        document.getElementById idSelector
+    $: (idSelector) -> document.getElementById idSelector
 
     _$: (divOrDivID) ->
         if typeof divOrDivID is "string"
@@ -45,8 +57,10 @@ class QR
         else
             Promise.reject new QR::ParamsError "dom fragment does not exist"
 
-QR::ScanError = class QRScanError extends Error
-QR::ParamsError = class QRParamsError extends Error
+QR::ScanError = errorConstructor "ScanError"
+QR::ParamsError = errorConstructor "ParamsError"
+QR::CloseScannerError = errorConstructor "CloseScannerError"
+QR::ScannerNotAvailableError = errorConstructor "ScannerNotAvailableError"
 
 module.exports = new QR
 

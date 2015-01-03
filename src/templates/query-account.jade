@@ -1,10 +1,14 @@
 .margin50.white.center
-    h1.light Query an Account
+    h1.light query account 
 
-    // include partials
     if error
         p
          | Error: Could not properly parse QR code
+
+    if cameraNotEnabled
+        p.camera-not-enabled
+         | camera not enabled
+         | cannot query accounts with QR
 
     p
      | tap the screen 
