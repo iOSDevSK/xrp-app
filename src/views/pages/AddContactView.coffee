@@ -111,7 +111,7 @@ AddContactView::resolveQuery = ({account, parsedURI}) ->
 
 AddContactView::getContact = ->
     Contact.pickOne()
-           .then => @resolveContact()
+           .then (contact) => @resolveContact contact
            .catch (e) -> throw e
 
 AddContactView::resolveContact = (contact) ->
@@ -121,7 +121,9 @@ AddContactView::resolveContact = (contact) ->
     @checkIfCanSaveAssociation()
 
 AddContactView::checkIfCanSaveAssociation = ->
-    if @account? and @contact? then @showSaveButton
+    if @account? and @contact?
+        console.log "have both contact and account, show save button"
+        @showSaveButton
 
 AddContactView::showSaveButton = ->
     @middleButtonProgress.set 0
