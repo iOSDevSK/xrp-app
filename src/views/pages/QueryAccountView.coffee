@@ -75,12 +75,12 @@ QueryAccountView::resetDefaultQRCode = ->
       .then => @updateQRCode()
 
 QueryAccountView::openQuery = (data) ->
-    console.log "open query", data
+    console.log "query-account-open-query", data
     QR.clearNodes @options.id
       .then => @resolveQuery data
 
 QueryAccountView::resolveQuery = ({account, parsedURI}) ->
-    console.log "resolve query", account, parsedURI
+    console.log "query-account-resolve-query", account, parsedURI
     account.updateBalance()
            .then =>
                console.log "balance updated"
