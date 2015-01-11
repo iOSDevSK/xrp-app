@@ -1,8 +1,11 @@
+ContainerSurface = require "famous/surfaces/ContainerSurface"
 Surface = require "famous/core/Surface"
 Modifier = require "famous/core/Modifier"
 Transform = require "famous/core/Transform"
 PageView = require "./PageView"
 Transitionable = require "famous/transitions/Transitionable"
+Easing = require "famous/transitions/Easing"
+Timer = require "famous/utilities/Timer"
 
 QR = require "../../lib/qr"
 XRP = require "xrp-app-lib"
@@ -22,7 +25,11 @@ class AddContactView extends PageView
                 x *= -@options.xOffset
                 return Transform.translate x, 0, 10
 
-        node = @add backgroundPositioningModifier
+        node = new ContainerSurface @options.rootContainer
+
+        @add backgroundPositioningModifier
+        .add node
+
         node.add background
 
         homeButton = new Surface content: home()
@@ -34,7 +41,7 @@ class AddContactView extends PageView
             transform: =>
                 y =  @progress.get()
                 y *= 100
-                Transform.translate 0, y, 1
+                Transform.translate 0, y, 10
 
         node.add homeButtonModifier
              .add homeButton
@@ -54,18 +61,36 @@ class AddContactView extends PageView
         middlePositioningModifier = new Modifier
             origin: [0.5, 0.5]
             align: [0.5, 0.5]
+            transform: Transform.translate 0, 0, 180
+
+        middleRotationModifier = new Modifier
+            transform: Transform.rotate 0, -Math.PI / 8, -Math.PI / 10 
 
         @middleButtonProgress = new Transitionable 1
 
         middleSizingModifier = new Modifier
-            size: => [innerWidth, 80 * (1 - @middleButtonProgress.get())]
+            size: => [innerWidth * 1.5, @options.saveHeight * (1 - @middleButtonProgress.get())]
 
         upperNode = node.add upperPositioningModifier
         lowerNode = node.add lowerPositioningModifier
         middleNode = node.add middlePositioningModifier
+                         .add middleRotationModifier
         
         middleNode.add middleSizingModifier
                   .add middleBackground = new Surface @options.middleBackground
+
+        saveButtonModifier = new Modifier
+            size: [undefined, @options.saveHeight]
+            transform: =>
+                p = @middleButtonProgress.get()
+                Transform.translate -window.innerWidth * p, 0, 2
+
+        @saveButton = new Surface @options.saveButton
+
+        middleNode.add saveButtonModifier
+                  .add @saveButton
+
+        @saveButton.on "touchstart", => @saveAssociation()
 
         homeButton.on "touchstart", => @broadcast "openHomeView"
 
@@ -110,7 +135,11 @@ AddContactView::resolveQuery = ({account, parsedURI}) ->
     @checkIfCanSaveAssociation()
 
 AddContactView::getContact = ->
+    console.log "getting contact"
     Contact.pickOne()
+           .then (contact) ->
+               console.log JSON.stringify contact
+               contact
            .then (contact) => @resolveContact contact
            .catch (e) -> throw e
 
@@ -123,17 +152,23 @@ AddContactView::resolveContact = (contact) ->
 AddContactView::checkIfCanSaveAssociation = ->
     if @account? and @contact?
         console.log "have both contact and account, show save button"
-        @showSaveButton
+        _ = => @showSaveButton()
+        Timer.after _, 40
+
+AddContactView::saveAssociation = ->
+    alert "saving contact"
+    @hideSaveButton()
 
 AddContactView::showSaveButton = ->
-    @middleButtonProgress.set 0
-    # @subscribe saveButton
+    @middleButtonProgress.set 0, @options.inTransition, => @subscribe @saveButton
 
 AddContactView::hideSaveButton = ->
-    @middleButtonProgress.set 1
-    # @unsubscribe saveButton
+    @middleButtonProgress.set 1, @options.outTransition, => @unsubscribe @saveButton
 
 AddContactView.DEFAULT_OPTIONS =
+    rootContainer:
+        classes: ["clipped"]
+    saveHeight: 80
     xOffset: innerWidth
     background:
         classes: ["add-contact-view-background"]
@@ -143,7 +178,17 @@ AddContactView.DEFAULT_OPTIONS =
         classes: ["add-contact-import-account"]
     upperLabel:
         classes: ["add-contact-import-contact"]
-    id:           "qr-add-contact"
+    id: "qr-add-contact"
+    inTransition:
+        method: "spring"
+        period: 800
+        dampingRatio: 0.6
+    outTransition:
+        period: 400
+        curve: Easing.inBack
+    saveButton:
+        content: "<h1>save</h1>"
+        classes: ["add-contact-save-button", "center"]
 
 module.exports = AddContactView
 
