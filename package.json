@@ -52,6 +52,7 @@
     "sinon-chai": "^2.6.0",
     "stylify": "^0.1.6",
     "stylus": "^0.47.3",
+    "superagent": "^0.21.0",
     "uglifyjs": "^2.3.6"
   }
 }

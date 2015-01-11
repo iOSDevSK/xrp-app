@@ -147,7 +147,11 @@ AddContactView::resolveContact = (contact) ->
     @contact = contact
     console.log "contact resolved", contact
     @setUpperContent contact: contact
-    @checkIfCanSaveAssociation()
+
+    if Contact.hasARippleAddress @contact
+        navigator.notification.alert "#{contact.name.formatted} already has a ripple address", (->), "Redundant"
+    else
+        @checkIfCanSaveAssociation()
 
 AddContactView::checkIfCanSaveAssociation = ->
     if @account? and @contact?
@@ -156,8 +160,18 @@ AddContactView::checkIfCanSaveAssociation = ->
         Timer.after _, 40
 
 AddContactView::saveAssociation = ->
-    alert "saving contact"
-    @hideSaveButton()
+    console.log "saving association"
+    _ = (confirmationCode) =>
+        console.log "confirmation response", confirmationCode
+        Contact.saveLocally @contact, @account
+               .then (res) -> console.log res
+               .then => @hideSaveButton()
+
+    message = "Save address to contact?"
+    title = "Confirm"
+    buttons = ["yes", "cancel"]
+
+    navigator.notification.confirm message, _, title, buttons
 
 AddContactView::showSaveButton = ->
     @middleButtonProgress.set 0, @options.inTransition, => @subscribe @saveButton
