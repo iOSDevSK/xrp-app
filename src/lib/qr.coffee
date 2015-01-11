@@ -4,6 +4,8 @@ Timer = require "famous/utilities/Timer"
 {errorConstructor} = require "./helpers"
 
 QR =
+    defaultURI: "ripple://rfemvFrpCAPc4hUa1v8mPRYdmaCqR1iFpe"
+
     scanRippleURI: ->
         @scan()
         .then (data) ->

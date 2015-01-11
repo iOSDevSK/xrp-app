@@ -94,7 +94,7 @@ QueryAccountView::resolveQuery = ({account, parsedURI}) ->
                @updateQRCode()
 
 QueryAccountView::updateQRCode = ({uri, color} = color: "#34495e") ->
-    unless uri? then uri = "ripple://rfemvFrpCAPc4hUa1v8mPRYdmaCqR1iFpe"
+    unless uri? then uri = QR.defaultURI
     console.log "updating qr code", uri
 
     divID = @options.id

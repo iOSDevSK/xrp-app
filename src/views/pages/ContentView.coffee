@@ -4,6 +4,7 @@ Modifier = require "famous/core/Modifier"
 Surface = require "famous/core/Surface"
 Transitionable = require "famous/transitions/Transitionable"
 Transform = require "famous/core/Transform"
+Timer = require "famous/utilities/Timer"
 
 #Slider labels
 AddContactLabel = require "./labels/AddContactLabel"
@@ -11,8 +12,9 @@ SendPaymentLabel = require "./labels/SendPaymentLabel"
 WalletLabel = require "./labels/WalletLabel"
 QueryAccountLabel = require "./labels/QueryAccountLabel"
 
-newWalletTemplate = require "../../templates/new-wallet.jade"
 defaultContentTemplate = require "../../templates/default-content.jade"
+
+QR = require "../../lib/qr"
 
 class ContentView extends PageView
     constructor: ->
@@ -76,7 +78,7 @@ class ContentView extends PageView
             transform: Transform.translate 0, 0, 1
 
         @content = new Surface
-            content: newWalletTemplate()
+            content: defaultContentTemplate()
             classes: ['content']
 
         @content.on "click", => @broadcast "content-clicked"
@@ -84,11 +86,23 @@ class ContentView extends PageView
         contentNode.add contentPositioningModifier
                    .add @content
 
+        @showDefaultContent()
+
 ContentView::setContent = (data) ->
     @content.setContent data
 
 ContentView::showDefaultContent = ->
     @setContent defaultContentTemplate()
+    divID = @options.id
+    console.log divID
+    __ = ->
+        QR.encode divID, text: QR.defaultURI, width: 180, height: 180, colorDark: "#666"
+
+    _ = =>
+        QR.clearNodes @options.id
+          .then -> Timer.after __, 3
+
+    Timer.after _, 3
 
 ContentView::showSliders = ->
     @sliderTransitionable.set 0, @transition, => @_subscribeSliders()
@@ -121,6 +135,8 @@ ContentView::focus = ->
 ContentView::transition = duration: 800, curve: 'easeOut'
 
 ContentView.DEFAULT_OPTIONS =
+
+    id: "qr-default"
 
     height: innerHeight - 2 * SliderSelector.DEFAULT_OPTIONS.height
 
