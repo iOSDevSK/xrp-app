@@ -23,5 +23,7 @@ Contact =
 
         Promise.new (res, rej) -> navigator.contacts.find queryFields, res, rej, options
 
+    publish: (contact, address) -> @
+
 module.exports = Contact
 

@@ -1,8 +1,15 @@
-.margin50
+.margin50.white.center
     if contact
-        h1
-        | Contact imported
+        h1= contact.name.formatted
+
+        if contact.emails && contact.emails[0]
+            h2= contact.emails[0].value
+        if contact.phoneNumbers && contact.phoneNumbers[0]
+            h2.not-a-link= contact.phoneNumbers[0].value
+
+        if contact.photos && contact.photos[0]
+            img(src=contact.photos[0].value).contact-photo
+
     else 
-        h1
-        | Pick a contact
+        h1 pick a contact
   
