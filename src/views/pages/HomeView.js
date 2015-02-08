@@ -17,6 +17,7 @@ export default class HomeView extends PageView {
         const layoutPositioningModifier = new Modifier({
             transform: Transform.translate(0, 0, 1)
         })
+
         const background = new Surface({
             properties: {
                 backgroundColor: 'white'
@@ -35,7 +36,7 @@ export default class HomeView extends PageView {
             "sharePublicKey"
         ])
 
-        let node = this.add(postitioningModifier)
+        const node = this.add(postitioningModifier)
         node.add(background)
         node.add(layoutPositioningModifier).add(layout)
     }

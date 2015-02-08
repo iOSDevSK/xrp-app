@@ -17,7 +17,7 @@ export default class HomeButtonsView extends XView {
                 name: 'info',
                 classes: ['home-info-button'],
                 content: 'i',
-                eventName: 'showInfoView'
+                eventName: 'openInfoView'
             },
             {
                 name: 'share',
@@ -29,7 +29,7 @@ export default class HomeButtonsView extends XView {
                 name: 'payments',
                 classes: ['home-send-button'],
                 content: 'p',
-                eventName: 'showSendPaymentsView'
+                eventName: 'openSendPaymentsView'
             }
         ]
 

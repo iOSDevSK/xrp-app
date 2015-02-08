@@ -36,7 +36,7 @@ export default class AppController extends XView {
 
     show(view, options = {}) {
         if (options.on) {
-            this._eventInput.on(options.on, this.show.bind(this), view)
+            this._eventInput.on(options.on, this.show.bind(this, view))
         }
         else {
             console.log("show", view, options)
