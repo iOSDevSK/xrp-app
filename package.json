@@ -5,6 +5,7 @@
   "main": "src/index.coffee",
   "browserify": {
     "transform": [
+      "6to5ify",
       "coffeeify",
       "famousify",
       "jadeify",
@@ -16,8 +17,8 @@
   "scripts": {
     "test": "mocha --compilers coffee:coffee-script/register test/**/*",
     "start": "npm run build && npm run cordova",
-    "build": "browserify --extension='.coffee' src/index.coffee > static/bundle.js",
-    "watch": "watchify --extension='.coffee' src/index.coffee -o static/bundle.js --debug --verbose",
+    "build": "browserify --extension='.coffee' src/index.js > static/bundle.js",
+    "watch": "watchify --extension='.coffee' src/index.js -o static/bundle.js --debug --verbose",
     "cordova": "npm run cordova-copy && npm run cordova-build",
     "cordova-copy": "cp -R static/ Build/www/",
     "cordova-build": "cd Build && cordova build",
@@ -32,6 +33,7 @@
     "lint": "npm run lint-eslint; npm run lint-jscs"
   },
   "devDependencies": {
+    "6to5ify": "^4.1.0",
     "eslint": "^0.6.2",
     "jscs": "^1.5.7",
     "watchify": "^0.10.2"
@@ -64,5 +66,6 @@
     "stylify": "^0.1.6",
     "stylus": "^0.47.3",
     "superagent": "^0.21.0"
-  }
+  },
+  "repository": "git@bitbucket.com:adamcmiel/xrp"
 }
