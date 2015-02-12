@@ -1,4 +1,5 @@
 import PageView from './PageView'
+import SendPaymentContentView from './sendPayments/SendPaymentContentView'
 
 import Surface from 'famous/core/Surface'
 import Modifier from 'famous/core/Modifier'
@@ -21,22 +22,20 @@ export default class SendPaymentsView extends PageView {
         const layout = new HeaderFooterLayout(this.options.layout)
 
         this.subscribe(layout.header  = new Surface(this.options.header))
-        this.subscribe(layout.content = new Surface({
-            properties: {
-                backgroundColor: 'green'
-            }
-        }))
+        this.subscribe(layout.content = new SendPaymentContentView())
         this.subscribe(layout.footer  = new Surface({
             properties: {
                 backgroundColor: 'purple'
             }
         }))
 
+        this.pipeThrough('send-payments-form-submitted')
+
         const node = this.add(postitioningModifier)
         node.add(background)
 
         background.on('click', () => this._eventOutput.emit('openHomeView'))
-    //  node.add(layoutPositioningModifier).add(layout)
+        node.add(layoutPositioningModifier).add(layout)
     }
 }
 

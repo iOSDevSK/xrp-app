@@ -13,7 +13,7 @@ export default class InfoContentView extends XView {
         this.panes = []
         this.paneInFocus = null
 
-        for (let pane of data) this.addPane(pane)
+        this.panes.forEach(pane => this.addPane(pane))
 
         this._eventInput.on('focusPane', _pane => this.panes.forEach(pane => {
             if (pane.position > _pane.position) pane.hide()
