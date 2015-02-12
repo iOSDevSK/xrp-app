@@ -2,6 +2,7 @@ Promise = require "bluebird"
 XRP = require "xrp-app-lib"
 Timer = require "famous/utilities/Timer"
 {errorConstructor} = require "./helpers"
+jquery = require 'jquery'
 
 QR =
     defaultURI: "ripple://rfemvFrpCAPc4hUa1v8mPRYdmaCqR1iFpe"
@@ -34,6 +35,11 @@ QR =
         div = @_$ divOrDivID
         if options.text? then Promise.resolve new QRCode div, options
         else Promise.reject new QR.ParamsError "no uri specified"
+
+    encodeOnHiddenCanvas: (options) ->
+        div = @_$ "qr-target"
+        if options.text? then new QRCode div, options
+        else throw new QR.ParamsError "no uri specified"
 
     encodeRippleURI: (divID, data, options) ->
         Promise.resolve()
