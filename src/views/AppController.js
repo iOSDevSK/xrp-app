@@ -1,9 +1,4 @@
-import XRP from 'xrp-app-lib'
-
 import XView from './XView'
-import Surface from 'famous/core/Surface'
-import View from 'famous/core/View'
-import TouchSync from 'famous/inputs/TouchSync'
 import {HomeView, InfoView, SendPaymentsView} from './pages'
 import WalletController from './../lib/WalletController'
 import PaymentsController from './../lib/PaymentsController'
@@ -17,28 +12,20 @@ import PaymentsController from './../lib/PaymentsController'
 export default class AppController extends XView {
     constructor() {
         super()
-        var trigger = window.trigger = this._eventInput.trigger.bind(this._eventInput)
 
-        var walletController = new WalletController()
-        this.paymentsController = new PaymentsController(walletController.wallet)
+        this.walletController = new WalletController()
 
-        walletController.updateBalance()
-
-        walletController.on('balance:updated', (balance) => {
-          console.log('BALANCE UPDATED', balance)
+        this.paymentsController = new PaymentsController({
+          wallet: this.walletController.wallet
         })
 
-        this.paymentsController.on('payment:submitted', function(payment) {
-          console.log('PAYMENT SUBMITTED', payment)
-        })
+        this.subscribe(this.paymentsController)
+        this.subscribe(this.walletController)
 
-        this.paymentsController.on('payment:confirmed', function(payment) {
-          console.log('PAYMENT CONFIRMED', payment)
-        })
-
-        this.paymentsController.on('payment:failed', function(error) {
-          console.log('PAYMENT FAILED', error)
-        })
+        this.listen('balance:updated',   this.onBalanceUpdated)
+        this.listen('payment:submitted', this.onPaymentSubmitted)
+        this.listen('payment:confirmed', this.onPaymentConfirmed)
+        this.listen('payment:failed',    this.onPaymentFailed)
 
         this.addSubView(this.homeView = new HomeView())
         this.show(this.homeView, {
@@ -76,6 +63,23 @@ export default class AppController extends XView {
 
     sendPayment(e) {
       this.paymentsController.sendPayment(e)
+    }
+
+    onPaymentSubmitted(payment) {
+      console.log('PAYMENT SUBMITTED', payment)
+    }
+
+    onPaymentConfirmed(payment) {
+      console.log('PAYMENT CONFIRMED', payment)
+      this.walletController.updateBalance()
+    }
+
+    onPaymentFailed(error) {
+      console.log('PAYMENT FAILED', error)
+    }
+
+    onBalanceUpdated(balance) {
+      console.log('BALANCE UPDATED', balance)
     }
 
     sharePublicKey() {

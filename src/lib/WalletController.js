@@ -4,6 +4,8 @@ import EventEmitter from 'famous/core/EventEmitter'
 export default class WalletController extends EventEmitter {
   constructor() {
     super()
+    this.wallet
+    this.updateBalance()
   }
 
   get wallet() {
@@ -26,7 +28,6 @@ export default class WalletController extends EventEmitter {
   }
 
   updateBalance() {
-    window.wallet = this._wallet
     this._wallet.updateBalance().then( () => {
       this.emit('balance:updated', this._wallet.balance)
     })

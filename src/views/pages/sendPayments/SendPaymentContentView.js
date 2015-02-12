@@ -36,8 +36,7 @@ export default class SendPaymentContentView extends XView {
         this.subscribe(form)
     }
 
-    onSubmit(event) {
-        event.preventDefault()
+    sendPayment(event) {
         let data = {}
         $('form.send-payments-content-form')
           .serializeArray().map(item => {

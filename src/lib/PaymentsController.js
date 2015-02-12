@@ -2,8 +2,8 @@ import EventEmitter from 'famous/core/EventEmitter'
 
 export default class PaymentsController extends EventEmitter {
 
-  constructor(wallet) {
-    this.wallet = wallet
+  constructor(options) {
+    this.wallet = options.wallet
     super()
   }
   
