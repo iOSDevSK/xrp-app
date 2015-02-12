@@ -2,10 +2,17 @@ import XView from '../XView'
 
 import Transitionable from 'famous/transitions/Transitionable'
 
+/*
 const transition = {
     method: 'spring',
     period: 800,
     dampingRatio: 0.8
+}
+/**/
+
+const transition = {
+    curve: 'easeOut',
+    duration: 600
 }
 
 export default class PageView extends XView {

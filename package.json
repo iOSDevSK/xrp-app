@@ -15,8 +15,10 @@
     ]
   },
   "scripts": {
-    "test": "mocha --compilers coffee:coffee-script/register test/**/*",
     "start": "npm run build && npm run cordova",
+    "install": "bower install",
+
+    "test": "mocha --compilers coffee:coffee-script/register test/**/*",
     "build": "browserify --extension='.coffee' src/index.js | uglifyjs > static/bundle.js",
     "watch": "watchify --extension='.coffee' src/index.js -o static/bundle.js --debug --verbose",
     "cordova": "npm run cordova-copy && npm run cordova-build",
