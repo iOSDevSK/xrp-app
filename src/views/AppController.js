@@ -2,9 +2,11 @@ import XRP from 'xrp-app-lib'
 
 import XView from './XView'
 import Surface from 'famous/core/Surface'
+import View from 'famous/core/View'
 import TouchSync from 'famous/inputs/TouchSync'
 import {HomeView, InfoView, SendPaymentsView} from './pages'
-import XRP from 'xrp-app-lib'
+import WalletController from './../lib/WalletController'
+import PaymentsController from './../lib/PaymentsController'
 
 /**
  * Top Level App Controller
@@ -17,25 +19,26 @@ export default class AppController extends XView {
         super()
         var trigger = window.trigger = this._eventInput.trigger.bind(this._eventInput)
 
-        let secret = localStorage.getItem('wallet:secret')
-        if (secret) {
-          var wallet = window.wallet = this.wallet = XRP.importWalletFromSecret(secret)
-          this.wallet.updateBalance().then(function() {
-            trigger('balance:updated')
-          })
-        }
+        var walletController = new WalletController()
+        this.paymentsController = new PaymentsController(walletController.wallet)
 
-        this.listen('payment:send', this.sendPayment)
+        walletController.updateBalance()
 
-        this.listen('payment:sent', function(payment) {
-          console.log('PAYMENT SENT', payment)
-        })
-        this.listen('balance:updated', function() {
-          console.log('BALANCE UPDATED', wallet.balance)
+        walletController.on('balance:updated', (balance) => {
+          console.log('BALANCE UPDATED', balance)
         })
 
-        this.wallet = XRP.createWallet()
-        window.wallet = this.wallet
+        this.paymentsController.on('payment:submitted', function(payment) {
+          console.log('PAYMENT SUBMITTED', payment)
+        })
+
+        this.paymentsController.on('payment:confirmed', function(payment) {
+          console.log('PAYMENT CONFIRMED', payment)
+        })
+
+        this.paymentsController.on('payment:failed', function(error) {
+          console.log('PAYMENT FAILED', error)
+        })
 
         this.addSubView(this.homeView = new HomeView())
         this.show(this.homeView, {
@@ -71,24 +74,12 @@ export default class AppController extends XView {
         }
     }
 
-    sendPayment(options) {
-
-      this.wallet.sendPayment({
-        to: {
-          publicKey: options.address
-        },
-        amount: options.amount
-      })
-      .then(payment => window.trigger('payment:sent', payment))
-      .catch(error => console.log(error))
+    sendPayment(e) {
+      this.paymentsController.sendPayment(e)
     }
 
     sharePublicKey() {
         console.log('share the public key')
-    }
-
-    sendPayment(e) {
-        console.log('sending payment', e)
     }
 }
 
