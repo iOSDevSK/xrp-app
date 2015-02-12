@@ -1,0 +1,32 @@
+{
+  "name": "xrp",
+  "version": "1.0",
+  "authors": [
+    "Adam Cmiel <adam@famo.us>"
+  ],
+  "description": "mobile xrp client built with ripplelib and famo.us",
+  "main": "src/index.js",
+  "moduleType": [
+    "es6",
+    "node"
+  ],
+  "keywords": [
+    "ripple",
+    "famo.us",
+    "mobile"
+  ],
+  "license": "MIT",
+  "homepage": "xrpapp.website",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "src/lib/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#~0.5.4"
+  }
+}
