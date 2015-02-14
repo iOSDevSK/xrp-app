@@ -9,7 +9,7 @@ import HeaderFooterLayout from 'famous/views/HeaderFooterLayout'
 import $ from 'jquery'
 
 const defaultRippleURI = 'rfemvFrpCAPc4hUa1v8mPRYdmaCqR1iFpe'
-import defaultData from '../../../templates/defaultQRDataURI.jade'
+import {defaultQRDataURI as defaultData} from '../../../templates'
 
 function angle() {
     return Math.PI * 1/6 * Math.sin(Date.now() * 0.01)
