@@ -16,10 +16,10 @@ function angle() {
 }
 
 export default class HomeContentView extends XView {
-    constructor() {
+    constructor(options) {
         super()
-
         this.content = new ImageSurface(this.options.content)
+        this.footer = new Surface(this.options.footer)
         let contentModifier = new Modifier({
             origin: [0.5, 0.5],
             align: [0.5, 0.5],
@@ -29,22 +29,30 @@ export default class HomeContentView extends XView {
         const layout = new HeaderFooterLayout(this.options.layout)
         layout.header.add(new Surface(this.options.header))
         layout.content.add(contentModifier).add(this.content)
-        layout.footer.add(new Surface(this.options.footer))
+        layout.footer.add(this.footer)
 
         this.add(layout)
-        this.getDataURL()
+        this.getDataURL({ uri: 'ripple:'+options.address })
+    }
+
+    setQrCode(url) {
+      this.content.setContent(url)
     }
 
     getDataURL({uri} = {uri: defaultRippleURI}, n = 0) {
         if (n > 100) throw new Error("can't render canvas for some reason")
         let code = QR.encodeOnHiddenCanvas({
-            text: defaultRippleURI
+            text: uri
         })
         let url = $(code._el).find('img').attr('src')
         if (url === undefined) setTimeout((() => this.getDataURL({uri: uri}, ++n)), 0)
         else {
-            console.log(url)
+          this.setQrCode(url)
         }
+    }
+
+    setBalance(balance) {
+      this.footer.setContent('balance: Ʀ '+balance)
     }
 
     setMiddleContent(uri, balance) {
@@ -66,7 +74,7 @@ HomeContentView.DEFAULT_OPTIONS = {
         classes: ['center', 'qr', 'backfaceVisibility', 'backface-visibility']
     },
     footer: {
-        content: 'balance: 14705XRP',
+        content: 'balance: Ʀ',
         classes: ['center']
     }
 }

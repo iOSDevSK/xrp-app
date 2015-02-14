@@ -21,6 +21,16 @@ export default class AppController extends XView {
           wallet: this.walletController.wallet
         })
 
+        new window.XRPAccount({
+          address: this.walletController.wallet.publicKey,
+          onPayment: payment => {
+            if (payment.amount > 0) {
+              this.onPaymentReceived(payment)
+            }
+          }
+        })
+        .subscribe()
+
         this.subscribe(this.paymentsController)
         this.subscribe(this.walletController)
 
@@ -29,9 +39,15 @@ export default class AppController extends XView {
         this.listen('payment:confirmed', this.onPaymentConfirmed)
         this.listen('payment:failed',    this.onPaymentFailed)
 
-        this.addSubView(this.homeView = new HomeView())
+        this.addSubView(this.homeView = new HomeView({
+          address: this.walletController.wallet.publicKey
+        }))
         this.show(this.homeView, {
             on: 'openHomeView'
+        })
+
+        this.listen('balance:updated', function(balance) {
+          this.homeView.updateBalance(balance)
         })
 
         this.addSubView(this.infoView = new InfoView())
@@ -92,6 +108,11 @@ export default class AppController extends XView {
 
     onPaymentSubmitted(payment) {
       console.log('PAYMENT SUBMITTED', payment)
+    }
+
+    onPaymentReceived(payment) {
+      console.log('PAYMENT RECEIVED', payment)
+      this.walletController.updateBalance()
     }
 
     onPaymentConfirmed(payment) {

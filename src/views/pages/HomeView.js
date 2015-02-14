@@ -7,7 +7,7 @@ import Transform from 'famous/core/Transform'
 import HeaderFooterLayout from 'famous/views/HeaderFooterLayout'
 
 export default class HomeView extends PageView {
-    constructor() {
+    constructor(options) {
         super()
 
         const postitioningModifier = new Modifier({
@@ -26,8 +26,10 @@ export default class HomeView extends PageView {
 
         const layout = new HeaderFooterLayout(this.options.layout)
 
+        this.homeContentView = new HomeContentView(options)
+
         this.subscribe(layout.header  = new Surface(this.options.header))
-        this.subscribe(layout.content = new HomeContentView())
+        this.subscribe(layout.content = this.homeContentView)
         this.subscribe(layout.footer  = new HomeButtonsView())
 
         this.pipeThrough([
@@ -39,6 +41,10 @@ export default class HomeView extends PageView {
         const node = this.add(postitioningModifier)
         node.add(background)
         node.add(layoutPositioningModifier).add(layout)
+    }
+
+    updateBalance(balance) {
+      this.homeContentView.setBalance(balance)
     }
 }
 
