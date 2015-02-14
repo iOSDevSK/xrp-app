@@ -1,5 +1,6 @@
 import XView from '../../XView'
 import XButton from '../../XButton'
+import SliderButton from '../../SliderButton'
 
 import GridLayout from 'famous/views/GridLayout'
 
@@ -33,11 +34,17 @@ export default class HomeButtonsView extends XView {
             }
         ]
 
-        const buttons = buttonsData.map(data => {
-            let button = this[data.name + 'Button'] = new XButton(data)
-            this.subscribe(button)
-            this.pipeThrough(data.eventName)
-            return button
+    //  const buttons = buttonsData.map(data => {
+    //      let button = this[data.name + 'Button'] = new XButton(data)
+    //      this.subscribe(button)
+    //      this.pipeThrough(data.eventName)
+    //      return button
+    //  })
+
+        const buttons = [0, 1, 2].map(_ => {
+            return new SliderButton({
+                direction: _
+            });
         })
     
         layout.sequenceFrom(buttons)

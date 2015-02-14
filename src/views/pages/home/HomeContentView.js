@@ -22,8 +22,8 @@ export default class HomeContentView extends XView {
         this.footer = new Surface(this.options.footer)
         let contentModifier = new Modifier({
             origin: [0.5, 0.5],
-            align: [0.5, 0.5],
-            transform: () => Transform.rotate(0, angle(), 0)
+            align: [0.5, 0.5]
+        //  transform: () => Transform.rotate(0, angle(), 0)
         })
 
         const layout = new HeaderFooterLayout(this.options.layout)
