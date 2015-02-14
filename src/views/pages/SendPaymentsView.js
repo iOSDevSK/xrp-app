@@ -28,7 +28,8 @@ export default class SendPaymentsView extends PageView {
 
         this.pipeThrough([
             'send-payments-form-submitted',
-            'openHomeView'
+            'openHomeView',
+            'scan-qr-code'
         ])
 
         this.listen('sendPayment', this.sendPayment)
@@ -41,7 +42,11 @@ export default class SendPaymentsView extends PageView {
     }
 
     sendPayment() {
-        this.content.sendPayment();
+        this.content.sendPayment()
+    }
+
+    showAddress(data) {
+        this.content.showAddress(data)
     }
 }
 

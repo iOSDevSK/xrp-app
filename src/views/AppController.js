@@ -110,5 +110,9 @@ export default class AppController extends XView {
     sharePublicKey() {
         console.log('share the public key')
     }
+
+    scanQRCode() {
+        QR.scanRippleURI().then(data => this.sendPaymentsView.showAddress(data))
+    }
 }
 

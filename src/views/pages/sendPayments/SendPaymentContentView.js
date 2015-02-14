@@ -13,6 +13,25 @@ export default class SendPaymentContentView extends XView {
     constructor() {
         super()
 
+        const cameraButton = new Surface({
+            content: 'C',
+            properties: {
+                backgroundColor: 'blue',
+                borderRadius: '200px'
+            }
+        })
+
+        const cameraButtonModifier = new Modifier({
+            size: [50, 50],
+            origin: [1, 0],
+            align: [1, 0],
+            transform: Transform.translate(0, 0, 10)
+        })
+
+        this.add(cameraButtonModifier).add(cameraButton)
+
+        cameraButton.on('click', () => this.broadcast('scan-qr-code'))
+
         const formModifier = new Modifier({
             size: [undefined, innerHeight * 9 / 16],
             transform: Transform.translate(0, 0, 2)
@@ -34,6 +53,15 @@ export default class SendPaymentContentView extends XView {
         this.add(formModifier).add(form)
 
         this.subscribe(form)
+    }
+
+    showAddress(data) {
+        console.log('show address:', data.address)
+        $('input#account-input').val(data.address)
+
+        if (data.amount) {
+            $('input#amount-input').val(data.amount)
+        }
     }
 
     sendPayment(event) {
