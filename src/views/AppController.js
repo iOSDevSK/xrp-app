@@ -1,7 +1,9 @@
 import XView from './XView'
-import {HomeView, InfoView, SendPaymentsView} from './pages'
-import WalletController from './../lib/WalletController'
-import PaymentsController from './../lib/PaymentsController'
+import {HomeView, InfoView, SendPaymentsView, FlashView} from './pages'
+import WalletController from '../lib/WalletController'
+import PaymentsController from '../lib/PaymentsController'
+
+import QR from '../lib/qr'
 
 /**
  * Top Level App Controller
@@ -42,8 +44,11 @@ export default class AppController extends XView {
             on: 'openSendPaymentsView'
         })
 
+        this.addSubView(this.flashView = new FlashView())
+
         this.listen('sharePublicKey', this.sharePublicKey)
         this.listen('send-payments-form-submitted', this.sendPayment)
+        this.listen('scan-qr-code', this.scanQRCode)
 
         this.viewInFocus = this.homeView
         this.homeView.focus()
@@ -59,6 +64,26 @@ export default class AppController extends XView {
             view.focus()
             this.viewInFocus = view
         }
+    }
+
+    flash({level, title, message}) {
+        const passedData = {
+            title: title,
+            message: message
+        }
+
+        switch (level) {
+            case 'warning':
+                this.flashView.warn(passedData)
+                break
+            case 'error':
+                this.flashView.err(passedData)
+                break
+            default:
+                this.flashView.notify(passedData)
+        }
+
+        this.flashView.flash()
     }
 
     sendPayment(e) {
