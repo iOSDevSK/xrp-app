@@ -1,5 +1,6 @@
 import XView from '../../XView'
 import XButton from '../../XButton'
+import SliderButton from '../../SliderButton'
 
 import GridLayout from 'famous/views/GridLayout'
 
@@ -17,24 +18,27 @@ export default class SendPaymentButtonsView extends XView {
                 name: 'back',
                 classes: ['left-back-button'],
                 content: '<',
-                eventName: 'openHomeView'
+                eventName: 'openHomeView',
+                direction: SliderButton.DIRECTION_RIGHT
             },
             {
                 name: 'check',
                 classes: ['send-payments-check-balance-button'],
                 content: '?',
-                eventName: 'checkAccountBalance'
+                eventName: 'checkAccountBalance',
+                direction: SliderButton.DIRECTION_UP
             },
             {
                 name: 'send',
                 classes: ['send-payments-send-button'],
                 content: '>',
-                eventName: 'sendPayment'
+                eventName: 'sendPayment',
+                direction: SliderButton.DIRECTION_LEFT
             }
         ]
 
         const buttons = buttonsData.map(data => {
-            let button = this[data.name + 'Button'] = new XButton(data)
+            let button = this[data.name + 'Button'] = new SliderButton(data)
             this.subscribe(button)
             this.pipeThrough(data.eventName)
             return button

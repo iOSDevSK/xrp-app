@@ -8,14 +8,15 @@ import TouchSync from 'famous/inputs/TouchSync'
 import Transitionable from 'famous/transitions/Transitionable'
 
 const tracksPath = 'images/tracks.jpg',
-      radius = innerWidth
+      radius = innerWidth,
+      threshold = innerWidth * 0.5
 
 export default class SliderButton extends PageView {
     constructor(options) {
         super(options)
 
         const tracksModifier = new Modifier({
-            origin: [0.5, 0.5],
+            origin: [0, 0.5],
             align: [0.5, 0.5],
             transform: Transform.translate(0, 0, 2),
             size: () => {
@@ -34,7 +35,7 @@ export default class SliderButton extends PageView {
             origin: [0.5, 0.5],
             align: [0.5, 0.5],
             size: () => {
-                const p = this.progress.get()
+                const p = 1 - this.progress.get()
                 return [radius * p, radius * p]
             },
             opacity: () => 1 - this.progress.get()
@@ -44,18 +45,17 @@ export default class SliderButton extends PageView {
             classes: ['slider-button-gradient-background']
         })
 
-        const button = new Surface({
+        const button = this.button = new Surface({
             classes: ['round', 'silder-button'],
             properties: {
                 backgroundColor: 'blue'
             }
         })
 
-
         let direction,
             tracksRotation = 0
 
-        const onUpdate = ({delta}) => dragProgress.set(dragProgress.get() + delta)
+        let onUpdate = ({delta}) => dragProgress.set(dragProgress.get() + delta)
 
         switch (options.direction) {
             case SliderButton.DIRECTION_RIGHT:
@@ -67,37 +67,50 @@ export default class SliderButton extends PageView {
                 break
             case SliderButton.DIRECTION_UP:
                 direction = 1
-                tracksRotation = Math.PI * 0.5
+                tracksRotation = Math.PI * 1.5
                 break
             default:
                 throw new Error('Specify a direction')
                 break
         }
 
-        button.on('touchstart', () => this.focus())
-        button.on('touchend', () => this.hide())
+        button.on('touchstart', () => this.broadcast('started') && this.focus())
+        button.on('touchend', () => this.broadcast('ended') && this.hide())
 
-        const sync = new TouchSync({
+        const sync = this.sync = new TouchSync({
             direction: direction
         })
 
-        button.pipe(sync)
+        this.subscribe(button)
+        this._eventInput.pipe(sync)
+
         sync.on('update', onUpdate)
 
         const tracksRotationModifier = new Modifier({
             transform: Transform.rotate(0, 0, tracksRotation)
         })
 
-        const dragProgress = new Transitionable(0)
+        const dragProgress = this.dragProgress = new Transitionable(0)
 
         const buttonModifier = new Modifier({
             size: [50, 50],
             origin: [0.5, 0.5],
             align: [0.5, 0.5],
             transform: () => {
-                return direction ? 
-                    Transform.translate(0, dragProgress.get(), 3) :
-                    Transform.translate(dragProgress.get(), 0, 3)
+                let p = dragProgress.get()
+
+                switch (options.direction) {
+                    case SliderButton.DIRECTION_RIGHT:
+                        if (p > threshold) this.reset()
+                        break
+                    case SliderButton.DIRECTION_LEFT:
+                        if (p < -threshold) this.reset()
+                        break
+                    case SliderButton.DIRECTION_UP:
+                        if (p < -threshold) this.reset()
+                }
+
+                return direction ? Transform.translate(0, p, 3) : Transform.translate(p, 0, 3)
             }
         })
 
@@ -105,10 +118,30 @@ export default class SliderButton extends PageView {
         this.add(tracksModifier).add(tracksRotationModifier).add(tracks)
         this.add(buttonModifier).add(button)
     }
+
+    reset() {
+        this.dragProgress.set(0)
+        console.log('slider button reset')
+        this.broadcast(this.options.eventName)
+    }
+
+    quiet() {
+        this.unsubscribe(this.button)
+    }
+
+    unquiet() {
+        this.subscribe(this.button)
+    }
+
+    hide() {
+        super.hide()
+        this.dragProgress.set(0)
+    }
 }
 
 SliderButton.DEFAULT_OPTIONS = {
-    direction: SliderButton.DIRECTION_RIGHT
+    direction: SliderButton.DIRECTION_RIGHT,
+    eventName: 'foo'
 }
 
 SliderButton.DIRECTION_RIGHT = 0

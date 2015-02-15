@@ -18,33 +18,30 @@ export default class HomeButtonsView extends XView {
                 name: 'info',
                 classes: ['home-info-button'],
                 content: 'i',
-                eventName: 'openInfoView'
+                eventName: 'openInfoView',
+                direction: SliderButton.DIRECTION_RIGHT
             },
             {
                 name: 'share',
                 classes: ['home-share-button'],
                 content: 's',
-                eventName: 'sharePublicKey'
+                eventName: 'sharePublicKey',
+                direction: SliderButton.DIRECTION_UP
             },
             {
                 name: 'payments',
                 classes: ['home-send-button'],
                 content: 'p',
-                eventName: 'openSendPaymentsView'
+                eventName: 'openSendPaymentsView',
+                direction: SliderButton.DIRECTION_LEFT
             }
         ]
 
-    //  const buttons = buttonsData.map(data => {
-    //      let button = this[data.name + 'Button'] = new XButton(data)
-    //      this.subscribe(button)
-    //      this.pipeThrough(data.eventName)
-    //      return button
-    //  })
-
-        const buttons = [0, 1, 2].map(_ => {
-            return new SliderButton({
-                direction: _
-            });
+        const buttons = buttonsData.map(data => {
+            let button = this[data.name + 'Button'] = new SliderButton(data)
+            this.subscribe(button)
+            this.pipeThrough(data.eventName)
+            return button
         })
     
         layout.sequenceFrom(buttons)

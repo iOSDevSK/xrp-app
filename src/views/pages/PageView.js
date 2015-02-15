@@ -16,8 +16,8 @@ const transition = {
 }
 
 export default class PageView extends XView {
-    constructor() {
-        super()
+    constructor(options) {
+        super(options)
         this.progress = new Transitionable(1)
     }
 
