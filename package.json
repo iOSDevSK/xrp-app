@@ -5,7 +5,7 @@
   "main": "src/index.coffee",
   "browserify": {
     "transform": [
-      "6to5ify",
+      "babelify",
       "coffeeify",
       "famousify",
       "jadeify",
@@ -17,7 +17,6 @@
   "scripts": {
     "start": "npm run build && npm run cordova",
     "install": "bower install",
-
     "test": "mocha --compilers coffee:coffee-script/register test/**/*",
     "build": "browserify --extension='.coffee' src/index.js | uglifyjs > static/bundle.js",
     "watch": "watchify --extension='.coffee' src/index.js -o static/bundle.js --debug --verbose",
@@ -29,13 +28,12 @@
     "android-build": "cd Build-Android && ./cordova/build --debug",
     "android-deploy": "adb install -r Build-Android/bin/XRP-debug.apk",
     "serve": "serve --compress -p 3333 static/",
-    "start-dev": "npm run serve & npm run watch",
+    "dev": "npm run serve & npm run watch",
     "lint-eslint": "eslint src/",
     "lint-jscs": "jscs src/",
     "lint": "npm run lint-eslint; npm run lint-jscs"
   },
   "devDependencies": {
-    "6to5ify": "^4.1.0",
     "eslint": "^0.6.2",
     "jscs": "^1.5.7",
     "serve": "^1.4.0",
@@ -44,9 +42,9 @@
   "author": "Adam Cmiel adamcmiel@gmail.com",
   "license": "MIT",
   "dependencies": {
+    "babelify": "^5.0.3",
     "backbone": "^1.1.2",
-    "backbone.localstorage": "^1.1.14",
-    "bluebird": "^2.3.11",
+    "bluebird": "2.5.2",
     "brfs": "^1.1.1",
     "browserify": "^5.9.1",
     "chai": "^1.10.0",
