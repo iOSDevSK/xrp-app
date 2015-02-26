@@ -19,5 +19,6 @@ start = ->
     # Add app to the mainContext
     mainContext.add new AppController
 
-if window.cordova?
-    document.addEventListener "deviceready", start, false
+eventName = if window.cordova? then "deviceready" else "DOMContentLoaded"
+document.addEventListener eventName, start, false
+    
