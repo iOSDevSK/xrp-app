@@ -11,19 +11,15 @@ import $ from 'jquery'
 const defaultRippleURI = 'rfemvFrpCAPc4hUa1v8mPRYdmaCqR1iFpe'
 import {defaultQRDataURI as defaultData} from '../../../templates'
 
-function angle() {
-    return Math.PI * 1/6 * Math.sin(Date.now() * 0.01)
-}
-
 export default class HomeContentView extends XView {
     constructor(options) {
         super()
         this.content = new ImageSurface(this.options.content)
         this.footer = new Surface(this.options.footer)
         let contentModifier = new Modifier({
+            size: [innerWidth * 0.667, innerWidth * 0.667],
             origin: [0.5, 0.5],
             align: [0.5, 0.5]
-        //  transform: () => Transform.rotate(0, angle(), 0)
         })
 
         const layout = new HeaderFooterLayout(this.options.layout)
@@ -32,7 +28,7 @@ export default class HomeContentView extends XView {
         layout.footer.add(this.footer)
 
         this.add(layout)
-        this.getDataURL({ uri: 'ripple:'+options.address })
+        this.getDataURL({ uri: `ripple: ${options.address}`})
     }
 
     setQrCode(url) {
@@ -52,7 +48,7 @@ export default class HomeContentView extends XView {
     }
 
     setBalance(balance) {
-      this.footer.setContent('balance: Ʀ '+balance)
+      this.footer.setContent(`balance: Ʀ ${balance}`)
     }
 
     setMiddleContent(uri, balance) {
