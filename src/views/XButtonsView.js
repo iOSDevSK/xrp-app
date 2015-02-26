@@ -4,7 +4,7 @@ import SliderButton from './SliderButton'
 
 import GridLayout from 'famous/views/GridLayout'
 
-export default class HomeButtonsView extends XView {
+export default class XButtonsView extends XView {
     constructor(buttonsData) {
         super()
 
