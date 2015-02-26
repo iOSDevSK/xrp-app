@@ -29,10 +29,25 @@ export default class XButtonsView extends XView {
     
     onlyListenTo(viewToListenTo) {
         super.onlyListenTo(viewToListenTo)
+        this.hide({except: viewToListenTo})
     }
 
     subscribeAll() {
         super.subscribeAll()
+        this.focus()
+    }
+
+    focus() {
+        // resets all the buttons
+        this.buttons.forEach(button => button.hide())
+    }
+
+    hide({except} = {except: null}) {
+        // pushes all buttons but selected button off page
+        // if called with undefined or no arguments, pushes all off
+        this.buttons.forEach(button => {
+            if (button !== except) button.hideAway()
+        })
     }
 }
 

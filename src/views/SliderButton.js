@@ -136,7 +136,6 @@ export default class SliderButton extends PageView {
 
     reset() {
         this.dragProgress.set(0)
-        console.log('slider button reset')
         this.broadcast(this.options.eventName)
         return this.end()
     }
@@ -172,7 +171,6 @@ export default class SliderButton extends PageView {
                 translation = [0, d, 0]
                 break
         }
-        console.log('translating ', this, translation)
         this.buttonOffsetModifier.setTransform(Transform.translate.apply(Transform, translation), this.options.transition)
     }
 
