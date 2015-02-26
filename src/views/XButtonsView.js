@@ -21,7 +21,7 @@ export default class XButtonsView extends XView {
         })
 
         this.listen('started', button => this.onlyListenTo(button))
-        this.listen('ended', button => this.ignore(button))
+        this.listen('ended', button => this.subscribeAll())
     
         layout.sequenceFrom(buttons)
         this.add(layout)
@@ -29,14 +29,10 @@ export default class XButtonsView extends XView {
     
     onlyListenTo(viewToListenTo) {
         super.onlyListenTo(viewToListenTo)
-        this.buttons.forEach(button => {
-            if (button !== viewToListenTo) button.hideAway()
-        })
     }
 
     subscribeAll() {
         super.subscribeAll()
-        this.buttons.forEach(button => button.hide())
     }
 }
 

@@ -5,6 +5,7 @@ import Surface from 'famous/core/Surface'
 import Modifier from 'famous/core/Modifier'
 import Transform from 'famous/core/Transform'
 import HeaderFooterLayout from 'famous/views/HeaderFooterLayout'
+import Timer from 'famous/utilities/Timer'
 
 export default class HomeView extends PageView {
     constructor(options) {
@@ -27,10 +28,11 @@ export default class HomeView extends PageView {
         const layout = new HeaderFooterLayout(this.options.layout)
 
         this.homeContentView = new HomeContentView(options)
+        this.homeButtonsView = new HomeButtonsView()
 
         this.subscribe(layout.header  = new Surface(this.options.header))
         this.subscribe(layout.content = this.homeContentView)
-        this.subscribe(layout.footer  = new HomeButtonsView())
+        this.subscribe(layout.footer  = this.homeButtonsView)
 
         this.pipeThrough([
             "openInfoView",
@@ -41,10 +43,19 @@ export default class HomeView extends PageView {
         const node = this.add(postitioningModifier)
         node.add(background)
         node.add(layoutPositioningModifier).add(layout)
+
     }
 
     updateBalance(balance) {
-      this.homeContentView.setBalance(balance)
+        this.homeContentView.setBalance(balance)
+    }
+
+    hide() {
+        super.hide()
+    }
+
+    focus() {
+        super.focus()
     }
 }
 
