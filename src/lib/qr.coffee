@@ -1,4 +1,4 @@
-Promise = require "bluebird"
+bb = require "bluebird"
 XRP = require "xrp-app-lib"
 Timer = require "famous/utilities/Timer"
 {errorConstructor} = require "./helpers"
@@ -24,7 +24,7 @@ QR =
             data
 
     scan: ->
-        new Promise (resolve, reject) ->
+        new bb (resolve, reject) ->
             result = (data) ->
                 if data.cancelled is 0 then resolve data
                 else reject new QR.CloseScannerError
@@ -33,8 +33,8 @@ QR =
 
     encode: (divOrDivID, options = width: 180, height: 180, colorDark: "#000") ->
         div = @_$ divOrDivID
-        if options.text? then Promise.resolve new QRCode div, options
-        else Promise.reject new QR.ParamsError "no uri specified"
+        if options.text? then bb.resolve new QRCode div, options
+        else bb.reject new QR.ParamsError "no uri specified"
 
     encodeOnHiddenCanvas: (options) ->
         div = @_$ "qr-target"
@@ -42,7 +42,7 @@ QR =
         else throw new QR.ParamsError "no uri specified"
 
     encodeRippleURI: (divID, data, options) ->
-        Promise.resolve()
+        bb.resolve()
                .then ->       uri = XRP.encodeURI data
                .then (uri) => @encode divID, uri, options
 
@@ -59,9 +59,9 @@ QR =
         div = @_$ divOrDivID
         if div?
             while div.firstChild then div.removeChild div.firstChild
-            Promise.resolve div
+            bb.resolve div
         else
-            Promise.reject new QR.ParamsError "dom fragment does not exist"
+            bb.reject new QR.ParamsError "dom fragment does not exist"
 
 QR.ScanError = errorConstructor "ScanError"
 QR.ParamsError = errorConstructor "ParamsError"
