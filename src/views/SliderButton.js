@@ -74,8 +74,8 @@ export default class SliderButton extends PageView {
                 break
         }
 
-        button.on('touchstart', () => this.broadcast('started') && this.focus())
-        button.on('touchend', () => this.broadcast('ended') && this.hide())
+        button.on('touchstart', () => this.start() && this.focus())
+        button.on('touchend', () => this.end() && this.hide())
 
         const sync = this.sync = new TouchSync({
             direction: direction
@@ -87,6 +87,8 @@ export default class SliderButton extends PageView {
         sync.on('update', onUpdate)
 
         const tracksRotationModifier = new Modifier({
+            origin: [0, 0.5],
+            align: [0, 0.5],
             transform: Transform.rotate(0, 0, tracksRotation)
         })
 
@@ -114,15 +116,27 @@ export default class SliderButton extends PageView {
             }
         })
 
+        const buttonOffsetModifier = this.buttonOffsetModifier = new Modifier()
+        this.direction = options.direction
+
         this.add(originBackgroundModifier).add(originBackground)
         this.add(tracksModifier).add(tracksRotationModifier).add(tracks)
-        this.add(buttonModifier).add(button)
+        this.add(buttonOffsetModifier).add(buttonModifier).add(button)
+    }
+
+    start() {
+        this.broadcast('started')
+    }
+
+    end() {
+        this.broadcast('ended')
     }
 
     reset() {
         this.dragProgress.set(0)
         console.log('slider button reset')
         this.broadcast(this.options.eventName)
+        this.end()
     }
 
     quiet() {
@@ -136,12 +150,37 @@ export default class SliderButton extends PageView {
     hide() {
         super.hide()
         this.dragProgress.set(0)
+        this.buttonOffsetModifier.setTransform(Transform.identity, this.options.transition)
+    }
+
+    hideAway() {
+        let translation
+        switch (this.options.direction) {
+            case SliderButton.DIRECTION_RIGHT:
+                // translate to the left
+                translation = [-innerWidth / 2, 0, 0]
+                break
+            case SliderButton.DIRECTION_LEFT:
+                // translate to the left
+                translation = [innerWidth / 2, 0, 0]
+                break
+            case SliderButton.DIRECTION_UP:
+                // translate to the left
+                translation = [0, innerWidth / 2, 0]
+                break
+        }
+        this.buttonOffsetModifier.setTransform(Transform.translate.apply(translation), this.options.transition)
     }
 }
 
 SliderButton.DEFAULT_OPTIONS = {
     direction: SliderButton.DIRECTION_RIGHT,
-    eventName: 'foo'
+    eventName: 'foo',
+    transition: {
+        method: 'spring',
+        dampingRatio: 0.5,
+        period: 700
+    }
 }
 
 SliderButton.DIRECTION_RIGHT = 0

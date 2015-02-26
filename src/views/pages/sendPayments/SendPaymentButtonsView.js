@@ -1,19 +1,9 @@
-import XView from '../../XView'
-import XButton from '../../XButton'
+import XButtonsView from '../../XButtonsView'
 import SliderButton from '../../SliderButton'
 
-import GridLayout from 'famous/views/GridLayout'
-
-export default class SendPaymentButtonsView extends XView {
+export default class SendPaymentButtonsView extends XButtonsView {
     constructor() {
-        super()
-
-        const layout = new GridLayout({
-            // 3 columns, one row
-            dimensions: [3, 1]
-        });
-
-        const buttonsData = [
+        super([
             {
                 name: 'back',
                 classes: ['left-back-button'],
@@ -35,17 +25,7 @@ export default class SendPaymentButtonsView extends XView {
                 eventName: 'sendPayment',
                 direction: SliderButton.DIRECTION_LEFT
             }
-        ]
-
-        const buttons = buttonsData.map(data => {
-            let button = this[data.name + 'Button'] = new SliderButton(data)
-            this.subscribe(button)
-            this.pipeThrough(data.eventName)
-            return button
-        })
-
-        layout.sequenceFrom(buttons)
-        this.add(layout)
+        ])
     }
 }
 
