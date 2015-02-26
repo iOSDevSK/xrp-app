@@ -33,12 +33,12 @@ QR =
 
     encode: (divOrDivID, options = width: 180, height: 180, colorDark: "#000") ->
         div = @_$ divOrDivID
-        if options.text? then bb.resolve new QRCode div, options
+        if options.text? then bb.resolve new window.QRCode div, options
         else bb.reject new QR.ParamsError "no uri specified"
 
     encodeOnHiddenCanvas: (options) ->
         div = @_$ "qr-target"
-        if options.text? then new QRCode div, options
+        if options.text? then new window.QRCode div, options
         else throw new QR.ParamsError "no uri specified"
 
     encodeRippleURI: (divID, data, options) ->
