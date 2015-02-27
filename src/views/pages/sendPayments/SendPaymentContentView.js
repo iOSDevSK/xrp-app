@@ -14,11 +14,8 @@ export default class SendPaymentContentView extends XView {
         super()
 
         const cameraButton = new Surface({
-            content: 'C',
-            properties: {
-                backgroundColor: 'blue',
-                borderRadius: '200px'
-            }
+            classes: ['round', 'slider-button', 'send-payments-camera-button'],
+            content: 'C'
         })
 
         const cameraButtonModifier = new Modifier({

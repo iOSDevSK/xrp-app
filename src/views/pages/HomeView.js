@@ -19,12 +19,7 @@ export default class HomeView extends PageView {
             transform: Transform.translate(0, 0, 1)
         })
 
-        const background = new Surface({
-            properties: {
-                backgroundColor: 'white'
-            }
-        })
-
+        const background = new Surface(this.options.background)
         const layout = new HeaderFooterLayout(this.options.layout)
 
         this.homeContentView = new HomeContentView(options)
@@ -65,7 +60,7 @@ HomeView.DEFAULT_OPTIONS = {
     },
     header: {
         content: 'XRP',
-        classes: ['home-header']
+        classes: ['header', 'home-header']
     },
     layout: {
         headerSize: innerHeight * 0.12,

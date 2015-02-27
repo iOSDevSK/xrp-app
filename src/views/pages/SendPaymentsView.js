@@ -52,17 +52,11 @@ export default class SendPaymentsView extends PageView {
 
 SendPaymentsView.DEFAULT_OPTIONS = {
     background: {
-        classes: ['send-payment-background'],
-        properties: {
-            backgroundColor: 'red'
-        }
+        classes: ['send-payment-background']
     },
     header: {
         content: 'send payment',
-        classes: ['send-payments-header'],
-        properties: {
-            backgroundColor: 'orange'
-        }
+        classes: ['header', 'send-payment-header']
     },
     layout: {
         headerSize: innerHeight * 0.12,
