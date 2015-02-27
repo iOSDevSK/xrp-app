@@ -9,7 +9,7 @@ import TouchSync from 'famous/inputs/TouchSync'
 import Transitionable from 'famous/transitions/Transitionable'
 
 const tracksPath = 'images/tracks.jpg',
-      radius = innerWidth,
+      radius = 2 * innerWidth,
       threshold = innerWidth * 0.5
 
 export default class SliderButton extends PageView {
@@ -48,10 +48,7 @@ export default class SliderButton extends PageView {
 
         const button = this.button = new Surface({
             classes: ['round', 'silder-button', ...options.classes],
-            content: options.content,
-            properties: {
-                backgroundColor: 'blue'
-            }
+            content: options.content
         })
 
         let direction,
