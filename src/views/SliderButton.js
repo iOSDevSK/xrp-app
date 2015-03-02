@@ -8,7 +8,7 @@ import ImageSurface from 'famous/surfaces/ImageSurface'
 import TouchSync from 'famous/inputs/TouchSync'
 import Transitionable from 'famous/transitions/Transitionable'
 
-const tracksPath = 'images/tracks.jpg',
+const tracksPath = 'images/chevrons-2.png',
       radius = 2 * innerWidth,
       threshold = innerWidth * 0.5
 
@@ -25,7 +25,7 @@ export default class SliderButton extends PageView {
                 return [(0.5 + 0.5*(1-p)) * innerWidth * 0.5, 
                         (0.5 + 0.5*(1-p)) * innerWidth * 0.5 * 0.25]
             },
-            opacity: () => (1-this.progress.get())
+            opacity: () => (0.8 * (1 - this.progress.get()))
         })
 
         const tracks = new ImageSurface({
@@ -46,8 +46,10 @@ export default class SliderButton extends PageView {
             classes: ['slider-button-gradient-background']
         })
 
-        const button = this.button = new Surface({
-            classes: ['round', 'silder-button', ...options.classes],
+        const buttonClasses = ['round', 'silder-button', ...options.classes]
+
+        let button = this.button = new Surface({
+            classes: buttonClasses.concat('shadow-2'),
             content: options.content
         })
 
@@ -73,8 +75,21 @@ export default class SliderButton extends PageView {
                 break
         }
 
-        button.on('touchstart', () => this.start() && this.focus())
-        button.on('touchend', () => this.end() && this.hide())
+        button.on('touchstart', () => {
+            this.start()
+
+            // remove shadow class
+            button.setClasses(buttonClasses.concat('shadow-1'))
+            this.focus()
+        })
+
+        button.on('touchend', () => {
+            this.end()
+            this.hide(() => {
+                // reset shadow class
+                button.setClasses(buttonClasses.concat('shadow-2'))
+            })
+        })
 
         const sync = this.sync = new TouchSync({
             direction: direction
@@ -145,8 +160,8 @@ export default class SliderButton extends PageView {
         this.subscribe(this.button)
     }
 
-    hide() {
-        super.hide()
+    hide(cb) {
+        super.hide(cb)
         this.dragProgress.set(0)
         this.buttonOffsetModifier.setTransform(Transform.identity, this.options.transition)
     }

@@ -67,7 +67,7 @@ HomeContentView.DEFAULT_OPTIONS = {
     },
     content: {
         content: defaultData(),
-        classes: ['center', 'qr', 'backfaceVisibility', 'backface-visibility']
+        classes: ['center', 'qr', 'shadow-1']
     },
     footer: {
         content: 'balance: Ʀ',

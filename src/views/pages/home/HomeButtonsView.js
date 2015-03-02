@@ -7,21 +7,21 @@ export default class HomeButtonsView extends XButtonsView {
             {
                 name: 'info',
                 classes: ['home-info-button'],
-                content: 'i',
+                content: '<i class="fa fa-info"></i>',
                 eventName: 'openInfoView',
                 direction: SliderButton.DIRECTION_RIGHT
             },
             {
                 name: 'share',
                 classes: ['home-share-button'],
-                content: 's',
+                content: '<i class="fa fa-share-alt"></i>',
                 eventName: 'sharePublicKey',
                 direction: SliderButton.DIRECTION_UP
             },
             {
                 name: 'payments',
                 classes: ['home-send-button'],
-                content: 'p',
+                content: '<i class="fa fa-paper-plane"></i>',
                 eventName: 'openSendPaymentsView',
                 direction: SliderButton.DIRECTION_LEFT
             }

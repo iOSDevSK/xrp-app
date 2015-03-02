@@ -15,6 +15,14 @@ base-color = send-payment-base-color
 input
     display block
 
+@media (max-width: 360px)
+    input#account-input
+        font-size 11pt
+
+@media (min-width: 360px)
+    input#account-input
+        font-size 13pt
+
 paper-input-decorator /deep/ .label-text,
 paper-input-decorator /deep/ .error {
     /* inline label,  floating label, error message and error icon color when the input is unfocused */
