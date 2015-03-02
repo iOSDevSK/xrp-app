@@ -32,7 +32,7 @@ export default class SendPaymentContentView extends XView {
 
         this.add(cameraButtonModifier).add(cameraButton)
 
-        cameraButton.on('click', () => this.broadcast('scan-qr-code'))
+        cameraButton.on('touchstart', () => this.broadcast('scan-qr-code'))
 
         const formModifier = new Modifier({
             size: [undefined, innerHeight * 9 / 16],

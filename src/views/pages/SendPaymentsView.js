@@ -54,7 +54,7 @@ SendPaymentsView.DEFAULT_OPTIONS = {
         classes: ['send-payment-background']
     },
     header: {
-        content: 'send payment',
+        content: '<h1>Send Payment</h1>',
         classes: ['header', 'send-payment-header']
     },
     layout: {

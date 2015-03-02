@@ -59,7 +59,7 @@ HomeView.DEFAULT_OPTIONS = {
         classes: ['home-background']
     },
     header: {
-        content: 'XRP',
+        content: '<h1>XRP</h1>',
         classes: ['header', 'home-header']
     },
     layout: {

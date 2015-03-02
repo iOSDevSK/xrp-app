@@ -25,7 +25,9 @@ export default class SliderButton extends PageView {
                 return [(0.5 + 0.5*(1-p)) * innerWidth * 0.5, 
                         (0.5 + 0.5*(1-p)) * innerWidth * 0.5 * 0.25]
             },
-            opacity: () => (0.8 * (1 - this.progress.get()))
+            opacity: () => {
+                return Math.max(0.8 * (1 - this.progress.get()), 0)
+            }
         })
 
         const tracks = new ImageSurface({
