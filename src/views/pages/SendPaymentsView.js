@@ -37,7 +37,6 @@ export default class SendPaymentsView extends PageView {
         const node = this.add(postitioningModifier)
         node.add(background)
 
-        background.on('click', () => this._eventOutput.emit('openHomeView'))
         node.add(layoutPositioningModifier).add(layout)
     }
 

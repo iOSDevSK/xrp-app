@@ -20,9 +20,9 @@ export default class SendPaymentContentView extends XView {
 
         const cameraButtonModifier = new Modifier({
             size: [50, 50],
-            origin: [1, 0],
+            origin: [0.5, 0.5],
             align: [1, 0],
-            transform: Transform.translate(0, 0, 10)
+            transform: Transform.translate(-1 * innerWidth / 6, 0, 3)
         })
 
         this.add(cameraButtonModifier).add(cameraButton)

@@ -3,11 +3,56 @@ base-color = send-payment-base-color
 .send-payment-background
     background base-color[medium];
 
+.send-payment-header
+    background base-color[darker];
+
 .send-payment-label-text
-    color: white
+    color grays[highlight];
 
 .send-payment-label-sprite
-    color: white
+    color grays[highlight];
 
 input
     display block
+
+paper-input-decorator /deep/ .label-text,
+paper-input-decorator /deep/ .error {
+    /* inline label,  floating label, error message and error icon color when the input is unfocused */
+    color: base-color[highlight];
+}
+
+paper-input-decorator /deep/ ::-webkit-input-placeholder {
+    /* platform specific rules for placeholder text */
+    color: base-color[highlight];
+}
+
+paper-input-decorator /deep/ ::-moz-placeholder {
+    color: base-color[highlight];
+}
+
+paper-input-decorator /deep/ .unfocused-underline {
+    /* line color when the input is unfocused */
+    background-color: base-color[highlight];
+}
+
+paper-input-decorator[focused] /deep/ .floating-label .label-text {
+    /* floating label color when the input is focused */
+    color: pinks[highlight];
+}
+
+paper-input-decorator /deep/ .focused-underline {
+    /* line color when the input is focused */
+    background-color: pinks[light];
+}
+
+paper-input-decorator.invalid[focused] /deep/ .floated-label .label-text,
+paper-input-decorator[focused] /deep/ .error {
+    /* floating label, error message nad error icon color when the input is invalid and focused */
+    color: pinks[light];
+}
+
+paper-input-decorator.invalid /deep/ .focused-underline {
+    /* line and color when the input is invalid and focused */
+    background-color: pinks[dark];
+}
+

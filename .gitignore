@@ -8,4 +8,5 @@ npm-debug.log
 assets/
 src/lib/vendor
 static/vendor
+static/images
 

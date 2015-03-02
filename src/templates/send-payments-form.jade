@@ -1,2 +1,14 @@
-input(name="recipient" type="text" placeholder="rfemvFrpCAPc4hUa1v8mPRYdmaCqR1iFpe")#account-input
-input(name="amount" type="tel" placeholder="0.0")#amount-input
+.margin18
+
+    paper-input-decorator(label="recipient account" floatingLabel)
+        input(is="core-input"
+            name="recipient"
+            type="text"
+            value="rfemvFrpCAPc4hUa1v8mPRYdmaCqR1iFpe")#account-input
+
+    paper-input-decorator(label="amount" floatingLabel)
+        input(is="core-input"
+            name="amount"
+            type="tel"
+            placeholder="0.0")#amount-input
+
