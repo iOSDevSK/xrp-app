@@ -9,6 +9,7 @@
     paper-input-decorator(label="amount" floatingLabel)
         input(is="core-input"
             name="amount"
-            type="tel"
+            type="number"
+            pattern="([0-9]+\.[0-9]*)|([0-9]*\.[0-9]+)|([0-9]+)"
             placeholder="0.0")#amount-input
 

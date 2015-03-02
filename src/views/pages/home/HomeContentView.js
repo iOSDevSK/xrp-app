@@ -28,7 +28,7 @@ export default class HomeContentView extends XView {
         layout.footer.add(this.footer)
 
         this.add(layout)
-        this.getDataURL({ uri: `ripple: ${options.address}`})
+        this.getDataURL({ uri: `ripple:\/\/${options.address}`})
     }
 
     setQrCode(url) {
@@ -36,7 +36,10 @@ export default class HomeContentView extends XView {
     }
 
     getDataURL({uri} = {uri: defaultRippleURI}, n = 0) {
-        if (n > 100) throw new Error("can't render canvas for some reason")
+        if (n > 100) {
+            this.broadcast('qr:failed')
+            return
+        }
         let code = QR.encodeOnHiddenCanvas({
             text: uri
         })
@@ -48,7 +51,7 @@ export default class HomeContentView extends XView {
     }
 
     setBalance(balance) {
-      this.footer.setContent(`balance: Ʀ ${balance}`)
+      this.footer.setContent(`<span>balance: XRP ${balance}</span>`)
     }
 
     setMiddleContent(uri, balance) {
@@ -62,7 +65,7 @@ HomeContentView.DEFAULT_OPTIONS = {
         footerSize: innerHeight * 0.1
     },
     header: {
-        content: 'receive payment',
+        content: '<h2>Recieve Payment</h2>',
         classes: ['center']
     },
     content: {
@@ -70,7 +73,7 @@ HomeContentView.DEFAULT_OPTIONS = {
         classes: ['center', 'qr', 'shadow-1']
     },
     footer: {
-        content: 'balance: Ʀ',
+        content: '<span>balance: XRP</span>',
         classes: ['center']
     }
 }

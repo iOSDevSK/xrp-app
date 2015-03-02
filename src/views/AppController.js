@@ -4,6 +4,7 @@ import WalletController from '../lib/WalletController'
 import PaymentsController from '../lib/PaymentsController'
 
 import QR from '../lib/qr'
+import share from '../lib/share'
 
 /**
  * Top Level App Controller
@@ -38,6 +39,7 @@ export default class AppController extends XView {
         this.listen('payment:submitted', this.onPaymentSubmitted)
         this.listen('payment:confirmed', this.onPaymentConfirmed)
         this.listen('payment:failed',    this.onPaymentFailed)
+        this.listen('qr:failed',         this.onQRFailed)
 
         this.addSubView(this.homeView = new HomeView({
           address: this.walletController.wallet.publicKey
@@ -103,37 +105,74 @@ export default class AppController extends XView {
     }
 
     sendPayment(e) {
-      this.paymentsController.sendPayment(e)
+        this.paymentsController.sendPayment(e)
     }
 
     onPaymentSubmitted(payment) {
-      console.log('PAYMENT SUBMITTED', payment)
+        console.log('PAYMENT SUBMITTED', payment)
+        this.flash({
+            level: 'warning',
+            title: 'Submitted',
+            message: 'Payment Submitted'
+        })
     }
 
     onPaymentReceived(payment) {
-      console.log('PAYMENT RECEIVED', payment)
-      this.walletController.updateBalance()
+        console.log('PAYMENT RECEIVED', payment)
+        this.walletController.updateBalance()
+        this.flash({
+            title: 'Payment Received',
+            message: `Received ${payment.amount} XRP!`
+        })
     }
 
     onPaymentConfirmed(payment) {
-      console.log('PAYMENT CONFIRMED', payment)
-      this.walletController.updateBalance()
+        console.log('PAYMENT CONFIRMED', payment)
+        this.flash({
+            title: 'Success',
+            message: 'Payment Confirmed'
+        })
+        this.walletController.updateBalance()
     }
 
     onPaymentFailed(error) {
-      console.log('PAYMENT FAILED', error)
+        console.log('PAYMENT FAILED', error)
+        this.flash({
+            level: 'error',
+            title: 'Error',
+            message: 'Payment Failed'
+        }) 
     }
 
     onBalanceUpdated(balance) {
       console.log('BALANCE UPDATED', balance)
     }
 
+    onQRFailed() {
+        this.flash({
+            level: 'error',
+            title: 'Error',
+            message: 'There was an error 2'
+        })
+    }
+
     sharePublicKey() {
+        try {
+            share(this.walletController.wallet.publicKey)
+        } catch (_) {
+            this.flash({
+                level: 'error',
+                title: 'Share Unavailable',
+                message: 'Cannot share address at this time'
+            })
+        }
         console.log('share the public key')
     }
 
     scanQRCode() {
-        QR.scanRippleURI().then(data => this.sendPaymentsView.showAddress(data))
+        QR.scanRippleURI()
+          .then(data => this.sendPaymentsView.showAddress(data))
+          .catch(err => this.onQRFailed())
     }
 }
 

@@ -30,9 +30,10 @@ export default class HomeView extends PageView {
         this.subscribe(layout.footer  = this.homeButtonsView)
 
         this.pipeThrough([
-            "openInfoView",
-            "openSendPaymentsView",
-            "sharePublicKey"
+            'openInfoView',
+            'openSendPaymentsView',
+            'sharePublicKey',
+            'qr:failed'
         ])
 
         const node = this.add(postitioningModifier)
