@@ -29,4 +29,6 @@ npm run start-dev
 com.phonegap.plugins.barcodescanner/
 org.apache.cordova.console/
 org.apache.cordova.contacts/
+nl.x-services.plugins.socialsharing
+https://github.com/EddyVerbruggen/LaunchMyApp-PhoneGap-Plugin.git --variable URL_SCHEME=ripple
 ```
