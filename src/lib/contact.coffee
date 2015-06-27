@@ -1,4 +1,3 @@
-Promise = require "bluebird"
 {errorConstructor} = require "./helpers"
 $ = require "superagent"
 XRP = require "xrp-app-lib"

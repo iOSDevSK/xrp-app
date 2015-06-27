@@ -35,7 +35,7 @@ export default class HomeContentView extends XView {
       this.content.setContent(url)
     }
 
-    getDataURL({uri} = {uri: defaultRippleURI}, n = 0) {
+    getDataURL({uri = defaultRippleURI}, n = 0) {
         if (n > 100) {
             this.broadcast('qr:failed')
             return
@@ -43,10 +43,13 @@ export default class HomeContentView extends XView {
         let code = QR.encodeOnHiddenCanvas({
             text: uri
         })
+
         let url = $(code._el).find('img').attr('src')
-        if (url === undefined) setTimeout((() => this.getDataURL({uri: uri}, ++n)), 0)
+        if (url === undefined) {
+            setTimeout((() => this.getDataURL({uri: uri}, ++n)), 0)
+        }
         else {
-          this.setQrCode(url)
+            this.setQrCode(url)
         }
     }
 
@@ -66,15 +69,15 @@ HomeContentView.DEFAULT_OPTIONS = {
     },
     header: {
         content: '<h2>Recieve Payment</h2>',
-        classes: ['center']
+        classes: ['center', 'dark']
     },
     content: {
         content: defaultData(),
-        classes: ['center', 'qr', 'shadow-1']
+        classes: ['center', 'qr', 'shadow-2']
     },
     footer: {
         content: '<span>balance: XRP</span>',
-        classes: ['center']
+        classes: ['center', 'dark']
     }
 }
 

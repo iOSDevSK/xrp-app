@@ -11,13 +11,22 @@ class XButton extends XView
 
     surfaceType = if @options.ImageSurface then ImageSurface else Surface
     @content = new surfaceType @options
-    @content.on "click", (e) =>
-      @_eventOutput.emit @options.eventName, @options.eventPayload or e
+
+    @content.on "click", (e) => @onClick e
+    @content.on "touchstart", (e) => @onPressDown e
+    @content.on "touchend", (e) => @onPressUp e
+
     @contentModifier = new Modifier @options.modifier
     @add @contentModifier
     .add @content
 
     @subscribe @content
+
+  onPressDown: () -> console.log 'press down', @, Date.now()
+  onPressUp: () -> console.log 'press up', @, Date.now()
+  onClick: (e) ->
+    @_eventOutput.emit @options.eventName, @options.eventPayload or e
+    console.log 'click', @, Date.now()
 
 XButton.DEFAULT_OPTIONS =
   content: ""

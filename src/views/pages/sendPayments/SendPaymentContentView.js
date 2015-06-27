@@ -13,6 +13,7 @@ export default class SendPaymentContentView extends XView {
     constructor() {
         super()
 
+            /*
         const cameraButton = new Surface({
             classes: [
                 'shadow-2',
@@ -33,6 +34,7 @@ export default class SendPaymentContentView extends XView {
         this.add(cameraButtonModifier).add(cameraButton)
 
         cameraButton.on('touchstart', () => this.broadcast('scan-qr-code'))
+            */
 
         const formModifier = new Modifier({
             size: [undefined, innerHeight * 9 / 16],

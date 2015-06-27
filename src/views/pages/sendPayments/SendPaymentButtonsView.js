@@ -11,6 +11,7 @@ export default class SendPaymentButtonsView extends XButtonsView {
                 eventName: 'openHomeView',
                 direction: SliderButton.DIRECTION_RIGHT
             },
+            /*
             {
                 name: 'check',
                 classes: ['send-payments-check-balance-button'],
@@ -18,9 +19,10 @@ export default class SendPaymentButtonsView extends XButtonsView {
                 eventName: 'checkAccountBalance',
                 direction: SliderButton.DIRECTION_UP
             },
+            */
             {
                 name: 'send',
-                classes: ['send-payments-send-button'],
+                classes: ['send-payments-send-button', 'right'],
                 content: '<i class="fa fa-check"></i>',
                 eventName: 'sendPayment',
                 direction: SliderButton.DIRECTION_LEFT

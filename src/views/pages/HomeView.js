@@ -12,7 +12,11 @@ export default class HomeView extends PageView {
         super()
 
         const postitioningModifier = new Modifier({
-            transform: () => Transform.translate(0, 0, -1000 * this.progress.get()) 
+            transform: () => Transform.translate(0, 0, -10 * this.progress.get()) 
+        })
+
+        const rotationModifier = new Modifier({
+            transform: () => Transform.rotate(0, Math.PI / 6 * this.progress.get(), 0)
         })
 
         const layoutPositioningModifier = new Modifier({
@@ -36,7 +40,7 @@ export default class HomeView extends PageView {
             'qr:failed'
         ])
 
-        const node = this.add(postitioningModifier)
+        const node = this.add(postitioningModifier).add(rotationModifier)
         node.add(background)
         node.add(layoutPositioningModifier).add(layout)
 
@@ -65,7 +69,7 @@ HomeView.DEFAULT_OPTIONS = {
     },
     layout: {
         headerSize: innerHeight * 0.12,
-        footerSize: innerHeight * 0.18
+        footerSize: innerHeight * 0.09
     }
 }
 

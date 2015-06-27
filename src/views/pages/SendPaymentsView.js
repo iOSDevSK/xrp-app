@@ -38,6 +38,28 @@ export default class SendPaymentsView extends PageView {
         node.add(background)
 
         node.add(layoutPositioningModifier).add(layout)
+
+        const cameraButton = new Surface({
+            classes: [
+                'send-payments-camera-button',
+                'center'
+                /*
+                'slider-button',
+                'send-payments-camera-button'
+                */
+            ],
+            content: '<i class="fa fa-qrcode" style="padding:' + (innerHeight * 0.06 - 3) + 'px 0 0 0"></i>'
+        })
+
+        const cameraButtonModifier = new Modifier({
+            size: [innerHeight * 0.12, innerHeight * 0.12],
+            origin: [1, 0],
+            align: [1, 0],
+            transform: Transform.translate(0, 0, 3)
+        })
+
+        node.add(cameraButtonModifier).add(cameraButton)
+        cameraButton.on('touchstart', () => this.broadcast('scan-qr-code'))
     }
 
     sendPayment() {
@@ -59,7 +81,7 @@ SendPaymentsView.DEFAULT_OPTIONS = {
     },
     layout: {
         headerSize: innerHeight * 0.12,
-        footerSize: innerHeight * 0.18
+        footerSize: innerHeight * 0.09
     }
 }
 

@@ -10,11 +10,11 @@ export default class XButtonsView extends XView {
 
         const layout = new GridLayout({
             // 3 columns, one row
-            dimensions: [3, 1]
+            dimensions: [buttonsData.length, 1]
         });
 
         const buttons = this.buttons = buttonsData.map(data => {
-            let button = this[data.name + 'Button'] = new SliderButton(data)
+            let button = this[data.name + 'Button'] = new RowButton(data)
             this.subscribe(button)
             this.pipeThrough(data.eventName)
             return button
@@ -42,12 +42,29 @@ export default class XButtonsView extends XView {
         this.buttons.forEach(button => button.hide())
     }
 
-    hide({except} = {except: null}) {
+    hide({except = null}) {
         // pushes all buttons but selected button off page
         // if called with undefined or no arguments, pushes all off
         this.buttons.forEach(button => {
             if (button !== except) button.hideAway()
         })
+    }
+}
+
+class RowButton extends XButton {
+    onPressDown(e) {
+        super.onPressDown(e)
+        this.content.addClass('pressDown')
+    }
+
+    onPressUp(e) {
+        super.onPressUp(e)
+        this.content.removeClass('pressDown')
+    }
+
+    onClick(e) {
+        super.onClick(e)
+        this.content.removeClass('pressDown')
     }
 }
 
