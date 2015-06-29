@@ -7,6 +7,8 @@ import Modifier from 'famous/core/Modifier'
 import Transform from 'famous/core/Transform'
 import HeaderFooterLayout from 'famous/views/HeaderFooterLayout'
 
+const lineHeight = innerHeight * 0.12 - 20
+
 export default class SendPaymentsView extends PageView {
     constructor() {
         super()
@@ -48,7 +50,7 @@ export default class SendPaymentsView extends PageView {
                 'send-payments-camera-button'
                 */
             ],
-            content: '<i class="fa fa-qrcode" style="padding:' + (innerHeight * 0.06 - 3) + 'px 0 0 0"></i>'
+            content: '<i class="fa fa-qrcode" style="padding: 20px 0 0 0; line-height: ' + lineHeight + 'px"></i>'
         })
 
         const cameraButtonModifier = new Modifier({
@@ -77,7 +79,10 @@ SendPaymentsView.DEFAULT_OPTIONS = {
     },
     header: {
         content: '<h1>Send Payment</h1>',
-        classes: ['header', 'send-payment-header']
+        classes: ['header', 'send-payment-header'],
+        properties: {
+            lineHeight: lineHeight + 'px'
+        }
     },
     layout: {
         headerSize: innerHeight * 0.12,

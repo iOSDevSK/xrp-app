@@ -7,6 +7,8 @@ import Transform from 'famous/core/Transform'
 import HeaderFooterLayout from 'famous/views/HeaderFooterLayout'
 import Timer from 'famous/utilities/Timer'
 
+const lineHeight = innerHeight * 0.12 - 20
+
 export default class HomeView extends PageView {
     constructor(options) {
         super()
@@ -65,7 +67,10 @@ HomeView.DEFAULT_OPTIONS = {
     },
     header: {
         content: '<h1>XRP</h1>',
-        classes: ['header', 'home-header']
+        classes: ['header', 'home-header'],
+        properties: {
+            lineHeight: lineHeight + 'px'
+        }
     },
     layout: {
         headerSize: innerHeight * 0.12,

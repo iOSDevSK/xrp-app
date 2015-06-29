@@ -8,8 +8,19 @@ form.send-payments-content-form
     background white
 
 .send-payment-header
-    padding-left 16px
+    display inline-block
     background base-color[darker];
+
+@media (max-width: 360px)
+    .send-payment-header
+        padding-left 16px
+
+@media (min-width: 360px)
+    .send-payment-header
+        center()
+
+.send-payments-camera-button i
+    vertical-align middle
 
 .send-payment-label-text
     color grays[dark];

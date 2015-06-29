@@ -4,6 +4,8 @@ import SliderButton from './SliderButton'
 
 import GridLayout from 'famous/views/GridLayout'
 
+const iconLineHeight = innerHeight * 0.09
+
 export default class XButtonsView extends XView {
     constructor(buttonsData) {
         super()
@@ -13,7 +15,16 @@ export default class XButtonsView extends XView {
             dimensions: [buttonsData.length, 1]
         });
 
-        const buttons = this.buttons = buttonsData.map(data => {
+        const buttons = this.buttons = buttonsData
+        .map(data => {
+            if (data.properties === undefined) {
+                data.properties = {}
+            }
+            data.properties.lineHeight = iconLineHeight + 'px'
+            data.classes.push('center')
+            return data
+        })
+        .map(data => {
             let button = this[data.name + 'Button'] = new RowButton(data)
             this.subscribe(button)
             this.pipeThrough(data.eventName)
