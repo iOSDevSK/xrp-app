@@ -6,7 +6,7 @@ Build-Android/*
 famousInternal/
 npm-debug.log
 assets/
-src/lib/vendor
+vendor
 static/vendor
 static/images
 

@@ -1,5 +1,20 @@
 .margin16
 
+
+    input(name="recipient"
+          type="text"
+          value="rfemvFrpCAPc4hUa1v8mPRYdmaCqR1iFpe")#account-input
+    label recipient account
+
+
+    input(name="amount"
+          type="number"
+          pattern="[0-9+]*"
+          placeholder="0")#amount-input
+    label amount to pay
+
+
+//
     paper-input-decorator(label="recipient account" floatingLabel)
         input(is="core-input"
             name="recipient"

@@ -21,7 +21,7 @@
     "start": "npm run build && npm run cordova",
     "install": "bower install",
     "test": "mocha --compilers coffee:coffee-script/register test/**/*",
-    "copy-assets": "cp -R src/lib/vendor static",
+    "copy-assets": "cp -R vendor static",
     "build": "npm run copy-assets && browserify --extension='.coffee' src/index.js -g uglifyify | uglifyjs > static/bundle.js",
     "watch": "npm run copy-assets && watchify --extension='.coffee' src/index.js -o static/bundle.js --dubug --verbose",
     "cordova": "npm run cordova-copy && npm run cordova-build",

@@ -27,7 +27,6 @@
     "tests"
   ],
   "dependencies": {
-    "paper-input": "Polymer/paper-input#~0.5.5",
     "fontawesome": "~4.3.0",
     "ripple": "~0.12.0",
     "qrcode.min": "https://raw.githubusercontent.com/davidshimjs/qrcodejs/master/qrcode.min.js"
