@@ -64,6 +64,8 @@ export default class AppController extends XView {
 
         this.addSubView(this.flashView = new FlashView())
 
+        window.flash = this.flash.bind(this)
+
         this.listen('sharePublicKey', this.sharePublicKey)
         this.listen('send-payments-form-submitted', this.sendPayment)
         this.listen('scan-qr-code', this.scanQRCode)
@@ -84,13 +86,8 @@ export default class AppController extends XView {
         }
     }
 
-    flash({level, title, message}) {
-        const passedData = {
-            title: title,
-            message: message
-        }
-
-        switch (level) {
+    flash(passedData) {
+        switch (passedData.level) {
             case 'warning':
                 this.flashView.warn(passedData)
                 break
@@ -139,7 +136,7 @@ export default class AppController extends XView {
         console.log('PAYMENT FAILED', error)
         this.flash({
             level: 'error',
-            title: 'Error',
+            title: 'Ripple Error',
             message: 'Payment Failed'
         }) 
     }
@@ -151,8 +148,8 @@ export default class AppController extends XView {
     onQRFailed() {
         this.flash({
             level: 'error',
-            title: 'Error',
-            message: 'There was an error 2'
+            title: 'Camera Error',
+            message: 'qr scanner not available'
         })
     }
 
