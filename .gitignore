@@ -24,3 +24,6 @@ xcuserdata
 DerivedData
 *.xcuserstate
 
+# duplicated www data
+**/www/**
+
