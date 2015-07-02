@@ -27,10 +27,9 @@ export default class WalletController extends EventEmitter {
     }
   }
 
-  updateBalance() {
-    this._wallet.updateBalance().then( () => {
-      this.emit('balance:updated', this._wallet.balance)
-    })
+  async updateBalance() {
+    await this._wallet.updateBalance()
+    this.emit('balance:updated', this._wallet.balance)
   }
 }
 

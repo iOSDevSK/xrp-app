@@ -77,7 +77,7 @@ HomeContentView.DEFAULT_OPTIONS = {
     },
     footer: {
         content: '<span>balance: XRP</span>',
-        classes: ['center', 'dark']
+        classes: ['home-content-footer', 'center', 'dark']
     }
 }
 

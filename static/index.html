@@ -6,22 +6,21 @@
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="vendor/ripple/ripple-min.js"></script>
-        <script type="text/javascript" src="vendor/qrcode.min/index.js"></script>
-
-    <!-- Remove web components, Polymer
-        <script type="text/javascript" src="vendor/webcomponentsjs/webcomponents.js"></script>
-
-        <link rel="import" href="vendor/paper-input/paper-input.html">
-    -->
-
         <link rel="stylesheet" href="vendor/fontawesome/css/font-awesome.css">
-
-        <script type="text/javascript" src="bundle.js"></script>
+        <script type="text/javascript">
+          function handleOpenURL(url) {
+              setTimeout(function() {
+                  window.__urlOpened = true
+                  window.__urlOpenedWithUrl = url
+              }, 0)
+          }
+        </script>
     </head>
     <body unresolved>
         <canvas id="qr-target" style="display:none"></canvas>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="vendor/ripple/ripple-min.js"></script>
+        <script type="text/javascript" src="vendor/qrcode.min/index.js"></script>
+        <script type="text/javascript" src="bundle.js"></script>
     </body>
 </html>

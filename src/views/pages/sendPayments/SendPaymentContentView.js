@@ -60,8 +60,9 @@ export default class SendPaymentContentView extends XView {
     }
 
     showAddress(data) {
-        console.log('show address:', data.address)
-        $('input#account-input').val(data.address)
+        const address = data.address || data.to
+        console.log('show address:', address)
+        $('input#account-input').val(address)
 
         if (data.amount) {
             $('input#amount-input').val(data.amount)

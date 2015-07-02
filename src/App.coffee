@@ -5,6 +5,7 @@ Surface = require "famous/core/Surface"
 Transitionable = require "famous/transitions/Transitionable"
 SpringTransition = require "famous/transitions/SpringTransition"
 SnapTransition = require "famous/transitions/SnapTransition"
+Timer = require "famous/utilities/Timer"
 Transitionable.registerMethod "spring", SpringTransition
 Transitionable.registerMethod "snap", SnapTransition
 
@@ -15,6 +16,10 @@ start = ->
     console.log "Start the app"
     mainContext = Engine.createContext()
     mainContext.setPerspective 800
+
+    # hot swap the background Splash Image for the gray background
+    # after the scene graph is created
+    Timer.after((() => document.getElementsByTagName('body')[0].classList.add('gray')), 12)
 
     # Add app to the mainContext
     mainContext.add new AppController

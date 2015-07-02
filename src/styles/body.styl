@@ -1,7 +1,15 @@
 body
     -webkit-user-select none
     user-select none
-    background grays[dark]
+
+    background: url(images/launchImage.png) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+
+    &.gray
+        background grays[dark];
 
 .home-icon
     position relative
@@ -25,7 +33,7 @@ body
     padding 0 10px 0
 
 .header
-    shadow-2()
+    shadow-1()
     padding-top 20px
 
     & h1
