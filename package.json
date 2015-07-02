@@ -37,7 +37,7 @@
   ],
   "scripts": {
     "start": "npm run build && npm run cordova",
-    "install": "bower install",
+    "install": "bower install && sh install-plugins.sh",
     "test": "mocha --compilers coffee:coffee-script/register test/**/*",
     "copy-assets": "cp -R vendor static",
     "build": "npm run copy-assets && browserify --extension='.coffee' src/index.js -g uglifyify | uglifyjs > static/bundle.js",
