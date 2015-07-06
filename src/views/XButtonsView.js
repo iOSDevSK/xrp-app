@@ -65,6 +65,7 @@ export default class XButtonsView extends XView {
 class RowButton extends XButton {
     onPressDown(e) {
         super.onPressDown(e)
+        this._emit(e)
         this.content.addClass('pressDown')
     }
 
@@ -74,7 +75,6 @@ class RowButton extends XButton {
     }
 
     onClick(e) {
-        super.onClick(e)
         this.content.removeClass('pressDown')
     }
 }

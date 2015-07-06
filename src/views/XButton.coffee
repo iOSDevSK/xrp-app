@@ -25,8 +25,11 @@ class XButton extends XView
   onPressDown: () -> console.log 'press down', @, Date.now()
   onPressUp: () -> console.log 'press up', @, Date.now()
   onClick: (e) ->
-    @_eventOutput.emit @options.eventName, @options.eventPayload or e
+    @_emit e
     console.log 'click', @, Date.now()
+
+  _emit: (e) ->
+    @broadcast @options.eventName, @options.eventPayload or e
 
 XButton.DEFAULT_OPTIONS =
   content: ""
