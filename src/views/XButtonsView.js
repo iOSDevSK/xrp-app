@@ -66,15 +66,23 @@ class RowButton extends XButton {
     onPressDown(e) {
         super.onPressDown(e)
         this._emit(e)
-        this.content.addClass('pressDown')
+        this.addPressDown()
     }
 
     onPressUp(e) {
         super.onPressUp(e)
-        this.content.removeClass('pressDown')
+        this.removePressDown()
     }
 
     onClick(e) {
+        this.removePressDown()
+    }
+
+    addPressDown() {
+        this.content.addClass('pressDown')
+    }
+
+    removePressDown() {
         this.content.removeClass('pressDown')
     }
 }
