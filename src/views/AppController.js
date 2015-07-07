@@ -6,6 +6,7 @@ import PaymentsController from '../lib/PaymentsController'
 import OpenUrlController from '../lib/OpenUrlController'
 
 import QR from '../lib/qr'
+import confirmPayment from '../lib/action-sheet'
 import share from '../lib/share'
 import $ from 'jquery'
 
@@ -119,8 +120,19 @@ export default class AppController extends XView {
         this.flashView.flash()
     }
 
-    sendPayment(e) {
-        this.paymentsController.sendPayment(e)
+    async sendPayment(e) {
+        const confirmed = await confirmPayment(e)
+
+        if (confirmed) {
+            this.paymentsController.sendPayment(e)
+        }
+        else {
+            this.flash({
+                level: 'warning',
+                title: 'Payment Cancelled',
+                message: 'payment cancelled by user'
+            })
+        }
     }
 
     onPaymentSubmitted(payment) {
@@ -128,7 +140,7 @@ export default class AppController extends XView {
         this.flash({
             level: 'warning',
             title: 'Submitted',
-            message: 'Payment Submitted'
+            message: 'payment submitted'
         })
     }
 
@@ -137,7 +149,7 @@ export default class AppController extends XView {
         this.walletController.updateBalance()
         this.flash({
             title: 'Payment Received',
-            message: `Received ${payment.amount} XRP!`
+            message: `received ${payment.amount} XRP!`
         })
     }
 
@@ -145,7 +157,7 @@ export default class AppController extends XView {
         console.log('PAYMENT CONFIRMED', payment)
         this.flash({
             title: 'Success',
-            message: 'Payment Confirmed'
+            message: 'payment confirmed'
         })
         this.walletController.updateBalance()
     }
@@ -155,7 +167,7 @@ export default class AppController extends XView {
         this.flash({
             level: 'error',
             title: 'Ripple Error',
-            message: 'Payment Failed'
+            message: 'payment failed'
         }) 
     }
 
@@ -180,7 +192,7 @@ export default class AppController extends XView {
             this.flash({
                 level: 'error',
                 title: 'Share Unavailable',
-                message: 'Cannot share address at this time'
+                message: 'cannot share address at this time'
             })
         }
         console.log('share the public key')
