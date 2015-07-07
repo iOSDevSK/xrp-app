@@ -121,6 +121,18 @@ export default class AppController extends XView {
     }
 
     async sendPayment(e) {
+
+        const verified = this.sendPaymentsView.verifyForm()
+
+        if (!verified) {
+            this.flash({
+                level: 'error',
+                title: 'Invaid Format',
+                message: 'payment cannot be submitted'
+            })
+            return
+        }
+
         const confirmed = await confirmPayment(e)
 
         if (confirmed) {

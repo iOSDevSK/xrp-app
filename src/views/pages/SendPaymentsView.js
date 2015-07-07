@@ -45,10 +45,6 @@ export default class SendPaymentsView extends PageView {
             classes: [
                 'send-payments-camera-button',
                 'center'
-                /*
-                'slider-button',
-                'send-payments-camera-button'
-                */
             ],
             content: '<i class="fa fa-qrcode" style="padding: 20px 0 0 0; line-height: ' + lineHeight + 'px"></i>'
         })
@@ -66,6 +62,10 @@ export default class SendPaymentsView extends PageView {
 
     sendPayment() {
         this.content.sendPayment()
+    }
+
+    verifyForm() {
+        return this.content.verifyForm()
     }
 
     showAddress(data) {

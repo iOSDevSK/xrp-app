@@ -13,29 +13,6 @@ export default class SendPaymentContentView extends XView {
     constructor() {
         super()
 
-            /*
-        const cameraButton = new Surface({
-            classes: [
-                'shadow-2',
-                'round',
-                'slider-button',
-                'send-payments-camera-button'
-            ],
-            content: '<i class="fa fa-qrcode"></i>'
-        })
-
-        const cameraButtonModifier = new Modifier({
-            size: [50, 50],
-            origin: [0.5, 0.5],
-            align: [1, 0],
-            transform: Transform.translate(-1 * innerWidth / 6, 0, 3)
-        })
-
-        this.add(cameraButtonModifier).add(cameraButton)
-
-        cameraButton.on('touchstart', () => this.broadcast('scan-qr-code'))
-            */
-
         const formModifier = new Modifier({
             size: [undefined, innerHeight * 9 / 16],
             transform: Transform.translate(0, 0, 2)
@@ -67,6 +44,23 @@ export default class SendPaymentContentView extends XView {
         if (data.amount) {
             $('input#amount-input').val(data.amount)
         }
+    }
+
+    verifyForm() {
+        let data = {}
+        $('form.send-payments-content-form')
+          .serializeArray().map(item => {
+            data[item.name] = item.value
+          })
+
+        const { amount, recipient } = data
+
+        const verified = (typeof amount === 'string') &&
+                         (amount.length > 0)          &&
+                         (/^\d*\.?\d*$/.test(amount))
+
+        console.log(`form verified: ${verified}`)
+        return verified
     }
 
     sendPayment(event) {
