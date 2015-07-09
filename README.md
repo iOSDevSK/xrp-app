@@ -26,6 +26,7 @@ npm run start-dev
 
 ##Plugins:
 ```
+cordova-plugin-crosswalk-webview
 com.phonegap.plugins.barcodescanner/
 org.apache.cordova.console/
 org.apache.cordova.contacts/

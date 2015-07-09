@@ -25,8 +25,8 @@ QR =
     scan: ->
         new Promise (resolve, reject) ->
             result = (data) ->
-                if data.cancelled is 0 then resolve data
-                else reject new QR.CloseScannerError
+                if data.cancelled then reject new QR.CloseScannerError
+                else resolve data
             notAvailable = -> reject new QR.ScannerNotAvailableError
             cordova.plugins.barcodeScanner.scan result, notAvailable
 

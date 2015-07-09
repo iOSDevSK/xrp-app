@@ -11,16 +11,7 @@
       "jadeify",
       "stylify",
       "cssify",
-      "brfs",
-      [
-      "uglifyify",
-      {
-          "ext": [
-          "js",
-          "coffee"
-          ]
-      }
-      ]
+      "brfs"
     ]
   },
   "addToBrowserify": [
@@ -40,15 +31,12 @@
     "install": "bower install && sh install-plugins.sh",
     "test": "mocha --compilers coffee:coffee-script/register test/**/*",
     "copy-assets": "cp -R vendor static",
-    "build": "npm run copy-assets && browserify --extension='.coffee' src/index.js -g uglifyify | uglifyjs > static/bundle.js",
+    "build": "npm run copy-assets && browserify --extension='.coffee' src/index.js > static/bundle.js",
     "watch": "npm run copy-assets && watchify --extension='.coffee' src/index.js -o static/bundle.js --dubug --verbose",
     "cordova": "npm run cordova-copy && npm run cordova-build",
     "cordova-copy": "cp -R static/ Build/www/",
     "cordova-build": "cd Build && cordova build",
-    "android": "npm run android-copy && npm run android-build",
-    "android-copy": "cp -R static/ Build-Android/assets/www/",
-    "android-build": "cd Build-Android && ./cordova/build --debug",
-    "android-deploy": "adb install -r Build-Android/bin/XRP-debug.apk",
+    "android-deploy": "adb install -r Build/platforms/android/build/outputs/apk/android-armv7-debug.apk",
     "serve": "serve --compress -p 3333 static/",
     "dev": "npm run serve & npm run watch",
     "lint-eslint": "eslint src/",
