@@ -13,4 +13,12 @@
     <preference name="StatusBarOverlaysWebView" value="true" />
     <preference name="StatusBarStyle" value="lightcontent" />
 
+    <platform name="android">
+        <icon src="res/android/mdpi/ic_launcher.png" density="mdpi" />
+        <icon src="res/android/hdpi/ic_launcher.png" density="hdpi" />
+        <icon src="res/android/xhdpi/ic_launcher.png" density="xhdpi" />
+        <icon src="res/android/xxhdpi/ic_launcher.png" density="xxhdpi" />
+        <icon src="res/android/xxxhdpi/ic_launcher.png" density="xxxhdpi" />
+    </platform>
+
 </widget>
