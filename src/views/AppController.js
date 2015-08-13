@@ -9,6 +9,7 @@ import QR from '../lib/qr'
 import confirmPayment from '../lib/action-sheet'
 import share from '../lib/share'
 import $ from 'jquery'
+import {Listener} from 'xrp-app-lib'
 
 /**
  * Top Level App Controller
@@ -26,7 +27,7 @@ export default class AppController extends XView {
           wallet: this.walletController.wallet
         }))
 
-        new window.XRPAccount({
+        new Listener({
           address: this.walletController.wallet.publicKey,
           onPayment: payment => {
             if (payment.amount > 0) {
