@@ -38,6 +38,7 @@
 		ECD6006A3FC149E8BC301125 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 25D1F79298784EA7A5F7E509 /* libiconv.dylib */; };
 		FB359C32A36D4133A448B858 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26CB6AE579B64E1B9FAA69C2 /* AddressBook.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		FE3EDB47A2EA4BB3A331BEFF /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A743F500A51645EABC1DF55D /* AVFoundation.framework */; };
+		B765E923A006480AA1868BE6 /* ActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = C3D0984EE20847BC8F1802F4 /* ActionSheet.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,6 +108,8 @@
 		ECEC507D42E54DE2B2A9DC34 /* CDVStatusBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVStatusBar.h; path = "cordova-plugin-statusbar/CDVStatusBar.h"; sourceTree = "<group>"; };
 		F840E1F0165FE0F500CFE078 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = XRP/config.xml; sourceTree = "<group>"; };
 		FE19E003C890441BB607D998 /* CDVContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVContact.h; path = "cordova-plugin-contacts/CDVContact.h"; sourceTree = "<group>"; };
+		C3D0984EE20847BC8F1802F4 /* ActionSheet.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "ActionSheet.m"; path = "nl.x-services.plugins.actionsheet/ActionSheet.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		0B6EC26A556E4150BFDFAFEE /* ActionSheet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "ActionSheet.h"; path = "nl.x-services.plugins.actionsheet/ActionSheet.h"; sourceTree = "<group>"; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -243,6 +246,8 @@
 				563E9594BC674A2982A1796D /* SocialSharing.h */,
 				2BAB25544445489B95B5CFB9 /* CDVStatusBar.m */,
 				ECEC507D42E54DE2B2A9DC34 /* CDVStatusBar.h */,
+				C3D0984EE20847BC8F1802F4 /* ActionSheet.m */,
+				0B6EC26A556E4150BFDFAFEE /* ActionSheet.h */,
 			);
 			name = Plugins;
 			path = XRP/Plugins;
@@ -399,6 +404,7 @@
 				26D64ABACB4549ECA61496A7 /* CDVContact.m in Sources */,
 				D2F691FED98A4EFDAA7C6517 /* SocialSharing.m in Sources */,
 				8E8D24D8A1CF46A888315EC2 /* CDVStatusBar.m in Sources */,
+				B765E923A006480AA1868BE6 /* ActionSheet.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
