@@ -19,7 +19,7 @@ start = ->
 
     # hot swap the background Splash Image for the gray background
     # after the scene graph is created
-    Timer.after((() => document.getElementsByTagName('body')[0].classList.add('gray')), 12)
+    Timer.after((() => document.body.classList.add('gray')), 12)
 
     # Add app to the mainContext
     mainContext.add new AppController
