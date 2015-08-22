@@ -7,7 +7,7 @@ function link({address}) {
 
 export default (address) => {
     window.plugins.socialsharing.share(
-        message({address: address}),
+        message(),
         subject(),
         null,
         link({address: address})
