@@ -55,6 +55,7 @@
     "babel-runtime": "^5.6.15",
     "babelify": "^6.1.2",
     "backbone": "^1.2.1",
+    "bower": "^1.4.0",
     "brfs": "^1.4.0",
     "browserify": "^10.2.4",
     "chai": "^3.0.0",
