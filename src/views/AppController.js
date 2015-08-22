@@ -27,15 +27,15 @@ export default class AppController extends XView {
           wallet: this.walletController.wallet
         }))
 
-        new Listener({
+        this.listener = new Listener({
           address: this.walletController.wallet.publicKey,
-          onPayment: payment => {
+          onPayment(payment) {
             if (payment.amount > 0) {
               this.onPaymentReceived(payment)
             }
           }
         })
-        .subscribe()
+        this.listener.subscribe()
 
         this.listen('balance:updated',   this.onBalanceUpdated)
         this.listen('payment:submitted', this.onPaymentSubmitted)
@@ -227,17 +227,19 @@ export default class AppController extends XView {
         this.openURLController.quiet()
     }
 
-    scanQRCode() {
-        QR.scanRippleURI()
-          .then(data => this.importRippleDataFromURI(data))
-          .catch(err => {
+    async scanQRCode() {
+        try {
+            const data = await QR.scanRippleURI()
+            this.importRippleDataFromURI(data)
+        }
+        catch (err) {
             if (err instanceof QR.CloseScannerError) {
               console.log(err)
             }
             else {
               this.onQRFailed()
             }
-          })
+        }
     }
 }
 
