@@ -1,12 +1,23 @@
 import XView from './XView'
 import XButton from './XButton'
-import SliderButton from './SliderButton'
 
 import GridLayout from 'famous/views/GridLayout'
 
 const iconLineHeight = innerHeight * 0.09
 
+/**
+ * abstract view class for declaring buttons in a grid layout
+ *
+ * @class XButtonsView
+ * @extends XView
+ */
 export default class XButtonsView extends XView {
+    /**
+     * lay out the given buttons in a grid layout
+     *
+     * @constructor
+     * @param ButtonData[]
+     */
     constructor(buttonsData) {
         super()
 
@@ -62,6 +73,13 @@ export default class XButtonsView extends XView {
     }
 }
 
+/**
+ * a row button to fill in the space in a grid layout
+ * responds to UI events
+ *
+ * @class RowButton
+ * @extends XButton
+ */
 class RowButton extends XButton {
     onPressDown(e) {
         super.onPressDown(e)
