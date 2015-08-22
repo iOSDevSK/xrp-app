@@ -13,11 +13,18 @@ import {Listener} from 'xrp-app-lib'
 
 /**
  * Top Level App Controller
+ *
  * @class App
  * @extends XView
  */
 
 export default class AppController extends XView {
+    /**
+     * create dependent views, delegate actions to events
+     * start listening to ripple wallet
+     *
+     * @constructor
+     */
     constructor() {
         super()
 
@@ -66,9 +73,6 @@ export default class AppController extends XView {
         })
 
         this.addSubView(this.flashView = new FlashView())
-
-        window.flash = this.flash.bind(this)
-
         this.balanceUpdated = false
 
         this.viewInFocus = this.homeView
@@ -77,6 +81,12 @@ export default class AppController extends XView {
         this.updateBalanceUntilShown()
     }
 
+    /**
+     * try a few times to update the wallet balance
+     *
+     * @async
+     * @method updateBalanceUntilShown
+     */
     async updateBalanceUntilShown() {
         let attempts = 0
         while(attempts < 6) {
@@ -89,6 +99,14 @@ export default class AppController extends XView {
         console.log('could not update balance')
     }
 
+    /**
+     * immediately show a view, or if given the on option,
+     * show that view on a given event
+     *
+     * @method show
+     * @param {View} view
+     * @param {String} options.on
+     */
     show(view, options = {}) {
         if (options.on) {
             this._eventInput.on(options.on, this.show.bind(this, view))
@@ -106,6 +124,13 @@ export default class AppController extends XView {
         }
     }
 
+    /**
+     * show the flash view with various levels of importance
+     * to alert the user to some action by the app
+     *
+     * @method flash
+     * @param {FlashData} passedData
+     */
     flash(passedData) {
         switch (passedData.level) {
             case 'warning':
@@ -121,33 +146,67 @@ export default class AppController extends XView {
         this.flashView.flash()
     }
 
-    async sendPayment(e) {
-
+    /**
+     * when the SendPayment form button is pressed,
+     * verify the form data and alert the user if invalid
+     * confirm the payment with the user and submit the payment
+     * if confirmed. Alert the user if cancelled
+     *
+     * @async
+     * @method sendPayment
+     * @param {PaymentFormSerializedData} payment
+     */
+    async sendPayment(payment) {
         const verified = this.sendPaymentsView.verifyForm()
-
         if (!verified) {
-            this.flash({
-                level: 'error',
-                title: 'Invaid Format',
-                message: 'payment cannot be submitted'
-            })
+            this.onSendPaymentsFormValidationError()
             return
         }
 
-        const confirmed = await confirmPayment(e)
-
+        const confirmed = await confirmPayment(payment)
         if (confirmed) {
-            this.paymentsController.sendPayment(e)
+            this.paymentsController.sendPayment(payment)
         }
         else {
-            this.flash({
-                level: 'warning',
-                title: 'Payment Cancelled',
-                message: 'payment cancelled by user'
-            })
+            this.onSendPaymentsCancel()
         }
     }
 
+    /**
+     * display an error message when the form cannot
+     * be correctly validated
+     *
+     * @method onSendPaymentsFormValidationError
+     */
+    onSendPaymentsFormValidationError() {
+      this.flash({
+          level: 'error',
+          title: 'Invaid Format',
+          message: 'payment cannot be submitted'
+      })
+    }
+
+    /**
+     * display a warning message when the payment
+     * submission is cancelled
+     *
+     * @method onSendPaymentsCancel
+     */
+    onSendPaymentsCancel() {
+      this.flash({
+          level: 'warning',
+          title: 'Payment Cancelled',
+          message: 'payment cancelled by user'
+      })
+    }
+
+    /**
+     * display a message when a payment is submitted
+     * to the ripple network
+     *
+     * @method onPaymentSubmitted
+     * @param {XRPLib.Payment}
+     */
     onPaymentSubmitted(payment) {
         console.log('PAYMENT SUBMITTED', payment)
         this.flash({
@@ -157,6 +216,13 @@ export default class AppController extends XView {
         })
     }
 
+    /**
+     * display a message when payment is recieved
+     * update the wallet balance
+     *
+     * @method onPaymentReceived
+     * @param {XRPLib.Payment} payment
+     */
     onPaymentReceived(payment) {
         console.log('PAYMENT RECEIVED', payment)
         this.walletController.updateBalance()
@@ -166,6 +232,14 @@ export default class AppController extends XView {
         })
     }
 
+    /**
+     * display a success message when payment sent to the
+     * ripple network succeeds
+     * update the wallet balance
+     *
+     * @method onPaymentConfirmed
+     * @param {XRPLib.Payment} payment
+     */
     onPaymentConfirmed(payment) {
         console.log('PAYMENT CONFIRMED', payment)
         this.flash({
@@ -175,6 +249,13 @@ export default class AppController extends XView {
         this.walletController.updateBalance()
     }
 
+    /**
+     * display an error message when payment sent to the
+     * ripple network fails 
+     *
+     * @method onPaymentFailed
+     * @param {Error} error
+     */
     onPaymentFailed(error) {
         console.log('PAYMENT FAILED', error)
         this.flash({
@@ -184,12 +265,23 @@ export default class AppController extends XView {
         }) 
     }
 
+    /**
+     * update the UI balance
+     *
+     * @method onBalanceUpdated
+     * @param {Number} balance
+     */
     onBalanceUpdated(balance) {
       this.balanceUpdated = true
       console.log('BALANCE UPDATED', balance)
       this.homeView.updateBalance(balance)
     }
 
+    /**
+     * flashe an error message when the camera is not available
+     *
+     * @method onQRFailed
+     */
     onQRFailed() {
         this.flash({
             level: 'error',
@@ -198,6 +290,12 @@ export default class AppController extends XView {
         })
     }
 
+    /**
+     * call to the share plugoin to share the public key
+     * flashes an error message on failure
+     *
+     * @method sharePublicKey
+     */
     sharePublicKey() {
         try {
             share(this.walletController.wallet.publicKey)
@@ -211,6 +309,12 @@ export default class AppController extends XView {
         console.log('share the public key')
     }
 
+    /**
+     * flash a warning message on import error
+     *
+     * @method onRippleImportError
+     * @param {Error} err
+     */
     onRippleImportError(err) {
         this.flash({
             level: 'warning',
@@ -219,7 +323,13 @@ export default class AppController extends XView {
         })
     }
 
-    // use xrp-app-lib to decode uri into data
+    /**
+     * use the xrp-app-lib ot decode uri into data,
+     * and present that data into the send-payment form
+     *
+     * @method importRippleDataFromURI
+     * @param {XRPAppLib.URIData} data
+     */
     importRippleDataFromURI(data) {
         console.log('importing ripple uri', data)
         this.sendPaymentsView.showAddress(data)
@@ -227,6 +337,14 @@ export default class AppController extends XView {
         this.openURLController.quiet()
     }
 
+    /**
+     * scan a qr code to import into the send-payment field
+     * emit an error if the lookup or parsing fails
+     *
+     * @async
+     * @method scanQRCode
+     * @returns {Promise}
+     */
     async scanQRCode() {
         try {
             const data = await QR.scanRippleURI()
