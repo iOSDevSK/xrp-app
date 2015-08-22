@@ -14,7 +14,7 @@ import {Listener} from 'xrp-app-lib'
 /**
  * Top Level App Controller
  *
- * @class App
+ * @class AppController
  * @extends XView
  */
 
@@ -157,7 +157,7 @@ export default class AppController extends XView {
      * @param {PaymentFormSerializedData} payment
      */
     async sendPayment(payment) {
-        const verified = this.sendPaymentsView.verifyForm()
+        const verified = this.paymentsController.verifyPayment(payment)
         if (!verified) {
             this.onSendPaymentsFormValidationError()
             return

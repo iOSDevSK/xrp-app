@@ -9,7 +9,18 @@ import FormContainerSurface from 'famous/surfaces/FormContainerSurface'
 
 import $ from 'jquery'
 
+/**
+ * View Controller for the send payments form
+ *
+ * @class SendPaymentContentView
+ * @extends XView
+ */
 export default class SendPaymentContentView extends XView {
+    /**
+     * set up view hierarchy
+     *
+     * @constructor
+     */
     constructor() {
         super()
 
@@ -36,6 +47,14 @@ export default class SendPaymentContentView extends XView {
         this.subscribe(form)
     }
 
+    /**
+     * show the given address and amount in the send payments form
+     *
+     * @method showAddress
+     * @param {String} data.address
+     * @param {String} data.to
+     * @param {String} data.amount
+     */
     showAddress(data) {
         const address = data.address || data.to
         console.log('show address:', address)
@@ -46,30 +65,28 @@ export default class SendPaymentContentView extends XView {
         }
     }
 
-    verifyForm() {
+    /**
+     * return a object representing the form data
+     *
+     * @get data
+     * @returns {Object} form data
+     */
+    get data() {
         let data = {}
-        $('form.send-payments-content-form')
-          .serializeArray().map(item => {
-            data[item.name] = item.value
-          })
-
-        const { amount, recipient } = data
-
-        const verified = (typeof amount === 'string') &&
-                         (amount.length > 0)          &&
-                         (/^\d*\.?\d*$/.test(amount))
-
-        console.log(`form verified: ${verified}`)
-        return verified
+        $('form.send-payments-content-form').serializeArray().forEach(item => {
+          data[item.name] = item.value
+        })
+        return data
     }
 
-    sendPayment(event) {
-        let data = {}
-        $('form.send-payments-content-form')
-          .serializeArray().map(item => {
-            data[item.name] = item.value
-          })
-        this.broadcast('send-payments-form-submitted', data)
+    /**
+     * emit a send payment form submitted event with the form data
+     *
+     * @method sendPayment
+     * @emits 'send-payments-form-submitted'
+     */
+    sendPayment() {
+        this.broadcast('send-payments-form-submitted', this.data)
     }
 }
 

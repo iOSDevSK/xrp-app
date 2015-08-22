@@ -52,5 +52,21 @@ export default class PaymentsController extends EventEmitter {
     }
 
   }
+
+  /**
+   * naïve check that the payment can be submitted
+   *
+   * @method verifyForm
+   * @param {String} data.amount
+   * @param {String} data.recipient
+   */
+  verifyPayment({amount, recipient}) {
+    const verified = (typeof amount === 'string') &&
+                      (amount.length > 0)          &&
+                      (/^\d*\.?\d*$/.test(amount))
+
+    console.log(`form verified: ${verified}`)
+    return verified
+  }
 }
 
