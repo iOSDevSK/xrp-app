@@ -51,17 +51,14 @@ export default class SendPaymentContentView extends XView {
      * show the given address and amount in the send payments form
      *
      * @method showAddress
-     * @param {String} data.address
-     * @param {String} data.to
-     * @param {String} data.amount
+     * @param {RippleURI.Decoded} data
      */
-    showAddress(data) {
-        const address = data.address || data.to
+    showAddress({address, amount}) {
         console.log('show address:', address)
         $('input#account-input').val(address)
 
-        if (data.amount) {
-            $('input#amount-input').val(data.amount)
+        if (amount) {
+            $('input#amount-input').val(amount)
         }
     }
 

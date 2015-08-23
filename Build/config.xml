@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.anypay.app.xrp" version="0.6.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.adamcmiel.app.xrp" version="0.6.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>XRP</name>
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+      A ripple wallet for your phone
     </description>
-    <author email="dev@cordova.apache.org" href="http://cordova.io">
-        Apache Cordova Team
+    <author email="adam@anypay.io" href="https://anypay.io">
+      Anypay Dev Team
     </author>
     <content src="index.html" />
     <access origin="*" />
