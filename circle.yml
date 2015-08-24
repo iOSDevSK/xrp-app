@@ -16,8 +16,11 @@ deployment:
   production:
     branch: release
     commands:
+      - npm start
       - echo "finished"
   staging:
     branch: master
     commands:
+      - npm start
       - echo "finished"
+
