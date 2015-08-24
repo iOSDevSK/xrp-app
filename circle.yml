@@ -1,0 +1,9 @@
+deployment:
+  production:
+    branch: release
+    commands:
+      - npm start
+  staging:
+    branch: master
+    commands:
+      - npm start

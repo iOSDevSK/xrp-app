@@ -9,16 +9,21 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
-
     <preference name="StatusBarOverlaysWebView" value="true" />
     <preference name="StatusBarStyle" value="lightcontent" />
-
     <platform name="android">
-        <icon src="res/android/mdpi/ic_launcher.png" density="mdpi" />
-        <icon src="res/android/hdpi/ic_launcher.png" density="hdpi" />
-        <icon src="res/android/xhdpi/ic_launcher.png" density="xhdpi" />
-        <icon src="res/android/xxhdpi/ic_launcher.png" density="xxhdpi" />
-        <icon src="res/android/xxxhdpi/ic_launcher.png" density="xxxhdpi" />
+        <icon density="mdpi" src="res/android/mdpi/ic_launcher.png" />
+        <icon density="hdpi" src="res/android/hdpi/ic_launcher.png" />
+        <icon density="xhdpi" src="res/android/xhdpi/ic_launcher.png" />
+        <icon density="xxhdpi" src="res/android/xxhdpi/ic_launcher.png" />
+        <icon density="xxxhdpi" src="res/android/xxxhdpi/ic_launcher.png" />
     </platform>
-
+    <plugin name="cordova-plugin-console" spec="~1.0.1" />
+    <plugin name="cordova-plugin-statusbar" spec="~1.0.1" />
+    <plugin name="nl.x-services.plugins.actionsheet" spec="~1.1.7" />
+    <plugin name="nl.x-services.plugins.launchmyapp" spec="~3.2.2">
+        <variable name="URL_SCHEME" value="ripple" />
+    </plugin>
+    <plugin name="nl.x-services.plugins.socialsharing" spec="~4.3.19" />
+    <plugin name="anypay-barcode-scanner" spec="https://github.com/anypay/anypay-plugin-barcodescanner.git" />
 </widget>
