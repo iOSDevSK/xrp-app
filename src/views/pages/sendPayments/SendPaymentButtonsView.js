@@ -1,7 +1,16 @@
 import XButtonsView from '../../XButtonsView'
-import SliderButton from '../../SliderButton'
 
+/**
+ * declare the buttons for the send payment page
+ *
+ * @class SendPaymentButtonsView
+ * @extends XButtonsView
+ */
 export default class SendPaymentButtonsView extends XButtonsView {
+    /**
+     * declare those buttons
+     * @constructor
+     */
     constructor() {
         super([
             {

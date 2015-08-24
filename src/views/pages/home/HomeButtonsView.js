@@ -1,8 +1,16 @@
 import XButtonsView from '../../XButtonsView'
-import SliderButton from '../../SliderButton'
 
-
+/**
+ * declare the buttons for the home page
+ *
+ * @class SendPaymentButtonsView
+ * @extends XButtonsView
+ */
 export default class HomeButtonsView extends XButtonsView {
+    /**
+     * declare those buttons
+     * @constructor
+     */
     constructor() {
         super([
             {

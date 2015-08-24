@@ -27,3 +27,7 @@ DerivedData
 # duplicated www data
 **/www/**
 
+**/plugins/**
+**/Plugins/**
+Build/platforms/ios/XRP
+

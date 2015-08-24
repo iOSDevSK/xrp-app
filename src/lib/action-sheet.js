@@ -1,7 +1,20 @@
+/**
+ * @module helpers
+ */
+
 const buttons = [
     'Confirm'
 ]
 
+
+/**
+ * Displays a native actionsheet with cancel button on iOS, using the hardware
+ * or soft back button on Android or WP to cancel
+ *
+ * @function confirmAction
+ * @param {Number} params.amount
+ * @return {Promise<Boolean>} confirmed
+ */
 export default function confirmAction({amount}) {
 
     const confirmPrompt = `Please confirm you would like to send ${amount} XRP`
@@ -13,8 +26,6 @@ export default function confirmAction({amount}) {
         function nativeActionSheet() {
             window.plugins.actionsheet.show({
                 title: confirmPrompt,
-                androidEnableCancelButton: true, // default false
-                winphoneEnableCancelButton: true, // default false
                 addCancelButtonWithLabel: 'Cancel',
                 buttonLabels: buttons,
             }, num => {

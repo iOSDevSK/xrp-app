@@ -1,16 +1,8 @@
 # Build instructions
 
-```sh
-npm install -g cordova
-cordova create Build com.adamcmiel.app.xrp XRP
-cd Build \
-    && cordova platform add ios \
-    && cordova plugin add org.apache.cordova.contacts \
-    && cordova plugin add https://github.com/wildabeast/BarcodeScanner.git
-```
-
 To build:
 ```sh
+npm install
 npm start
 ```
 
@@ -24,13 +16,3 @@ To develop in the browser:
 npm run start-dev
 ```
 
-##Plugins:
-```
-cordova-plugin-crosswalk-webview
-com.phonegap.plugins.barcodescanner/
-org.apache.cordova.console/
-org.apache.cordova.contacts/
-nl.x-services.plugins.socialsharing
-https://github.com/EddyVerbruggen/LaunchMyApp-PhoneGap-Plugin.git --variable URL_SCHEME=ripple
-nl.x-services.plugins.actionsheet
-```

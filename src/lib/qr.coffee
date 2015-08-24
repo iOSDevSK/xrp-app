@@ -3,6 +3,10 @@ Timer = require "famous/utilities/Timer"
 {errorConstructor} = require "./helpers"
 jquery = require 'jquery'
 
+###*
+ * @module helpers
+*###
+
 QR =
     defaultURI: "ripple://rfemvFrpCAPc4hUa1v8mPRYdmaCqR1iFpe"
 

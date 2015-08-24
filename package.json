@@ -28,12 +28,14 @@
   ],
   "scripts": {
     "start": "npm run build && npm run cordova",
-    "install": "bower install && sh install-plugins.sh",
+    "install": "bower install && npm run cordova-prepare && npm run cordova-update",
     "test": "mocha --compilers coffee:coffee-script/register test/**/*",
     "copy-assets": "cp -R vendor static",
     "build": "npm run copy-assets && browserify --extension='.coffee' src/index.js > static/bundle.js",
     "watch": "npm run copy-assets && watchify --extension='.coffee' src/index.js -o static/bundle.js --dubug --verbose",
-    "cordova": "npm run cordova-copy && npm run cordova-build",
+    "cordova": "npm run cordova-copy && npm run cordova-prepare && npm run cordova-build",
+    "cordova-update": "cd Build && cordova platform update ios",
+    "cordova-prepare": "cd Build && cordova prepare",
     "cordova-copy": "cp -R static/ Build/www/",
     "cordova-build": "cd Build && cordova build",
     "android-deploy": "adb install -r Build/platforms/android/build/outputs/apk/android-armv7-debug.apk",
@@ -52,14 +54,17 @@
   "author": "Adam Cmiel adamcmiel@gmail.com",
   "license": "MIT",
   "dependencies": {
+    "babel": "^5.8.21",
     "babel-runtime": "^5.6.15",
     "babelify": "^6.1.2",
     "backbone": "^1.2.1",
+    "bower": "^1.5.1",
     "brfs": "^1.4.0",
     "browserify": "^10.2.4",
     "chai": "^3.0.0",
     "coffee-script": "^1.9.3",
     "coffeeify": "^1.1.0",
+    "cordova": "^5.2.0",
     "cssify": "^0.7.0",
     "famous": "^0.3.5",
     "famous-polyfills": "^0.3.0",
@@ -78,7 +83,7 @@
     "superagent": "^1.2.0",
     "uglify-js": "^2.4.23",
     "uglifyify": "^3.0.1",
-    "xrp-app-lib": "git+ssh://git@github.com/adamcmiel/xrp-app-lib#702be7f"
+    "xrp-app-lib": "git+ssh://git@github.com:anypay/xrp-app-lib.git#40cff4918f51a0ecc08dc96bfed6147fd8512091"
   },
   "repository": "git@bitbucket.com:adamcmiel/xrp"
 }
