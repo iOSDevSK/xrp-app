@@ -1,9 +1,23 @@
+machine:
+  xcode:
+    version: "6.3.1"
+  environment:
+    XCODE_SCHEME: Archive
+
+dependencies:
+  pre:
+    - brew install npm
+
+test:
+  override:
+    - npm install && npm test
+
 deployment:
   production:
     branch: release
     commands:
-      - npm start
+      - echo "finished"
   staging:
     branch: master
     commands:
-      - npm start
+      - echo "finished"
