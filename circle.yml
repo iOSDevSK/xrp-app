@@ -10,7 +10,7 @@ dependencies:
 
 test:
   override:
-    - npm install && npm test
+    - npm test && npm start
 
 deployment:
   production:
