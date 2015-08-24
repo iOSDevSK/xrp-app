@@ -1,0 +1,53 @@
+{
+    "cordova-plugin-console": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-console"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "nl.x-services.plugins.socialsharing": {
+        "source": {
+            "type": "registry",
+            "id": "nl.x-services.plugins.socialsharing"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "phonegap-plugin-barcodescanner": {
+        "source": {
+            "type": "registry",
+            "id": "phonegap-plugin-barcodescanner"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "nl.x-services.plugins.launchmyapp": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/EddyVerbruggen/LaunchMyApp-PhoneGap-Plugin.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {
+            "URL_SCHEME": "ripple"
+        }
+    },
+    "cordova-plugin-statusbar": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-statusbar"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "nl.x-services.plugins.actionsheet": {
+        "source": {
+            "type": "registry",
+            "id": "nl.x-services.plugins.actionsheet"
+        },
+        "is_top_level": true,
+        "variables": {}
+    }
+}
