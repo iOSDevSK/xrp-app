@@ -53,10 +53,11 @@
   "author": "Adam Cmiel adamcmiel@gmail.com",
   "license": "MIT",
   "dependencies": {
+    "babel": "^5.8.21",
     "babel-runtime": "^5.6.15",
     "babelify": "^6.1.2",
     "backbone": "^1.2.1",
-    "bower": "^1.4.0",
+    "bower": "^1.5.1",
     "brfs": "^1.4.0",
     "browserify": "^10.2.4",
     "chai": "^3.0.0",
@@ -81,7 +82,7 @@
     "superagent": "^1.2.0",
     "uglify-js": "^2.4.23",
     "uglifyify": "^3.0.1",
-    "xrp-app-lib": "git+ssh://git@github.com/adamcmiel/xrp-app-lib#702be7f"
+    "xrp-app-lib": "git+ssh://git@github.com:anypay/xrp-app-lib.git#40cff4918f51a0ecc08dc96bfed6147fd8512091"
   },
   "repository": "git@bitbucket.com:adamcmiel/xrp"
 }
