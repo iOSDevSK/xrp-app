@@ -5,7 +5,7 @@ import WalletController from '../lib/WalletController'
 import PaymentsController from '../lib/PaymentsController'
 import OpenUrlController from '../lib/OpenUrlController'
 
-import QR from '../lib/qr'
+import * as QR from '../lib/qr'
 import confirmPayment from '../lib/action-sheet'
 import share from '../lib/share'
 import $ from 'jquery'
@@ -348,9 +348,11 @@ export default class AppController extends XView {
     async scanQRCode() {
         try {
             const data = await QR.scanRippleURI()
+            console.log(data)
             this.importRippleDataFromURI(data)
         }
         catch (err) {
+            console.log(err)
             if (err instanceof QR.CloseScannerError) {
               console.log(err)
             }

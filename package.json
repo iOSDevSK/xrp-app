@@ -8,11 +8,16 @@
       "babelify",
       "coffeeify",
       "famousify",
+      "browserify-shim",
       "jadeify",
       "stylify",
       "cssify",
       "brfs"
     ]
+  },
+  "browserify-shim": {
+      "qr-code": "global:QRCode",
+      "ripple": "global:ripple"
   },
   "addToBrowserify": [
     [
@@ -61,6 +66,7 @@
     "bower": "^1.5.1",
     "brfs": "^1.4.0",
     "browserify": "^10.2.4",
+    "browserify-shim": "^3.8.10",
     "chai": "^3.0.0",
     "coffee-script": "^1.9.3",
     "coffeeify": "^1.1.0",

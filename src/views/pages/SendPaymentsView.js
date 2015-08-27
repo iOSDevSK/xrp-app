@@ -6,6 +6,7 @@ import Surface from 'famous/core/Surface'
 import Modifier from 'famous/core/Modifier'
 import Transform from 'famous/core/Transform'
 import HeaderFooterLayout from 'famous/views/HeaderFooterLayout'
+import { RowButton } from '../XButtonsView'
 
 const lineHeight = innerHeight * 0.12 - 20
 
@@ -41,13 +42,15 @@ export default class SendPaymentsView extends PageView {
 
         node.add(layoutPositioningModifier).add(layout)
 
-        const cameraButton = new Surface({
+        const cameraButton = new RowButton({
             classes: [
                 'send-payments-camera-button',
                 'center'
             ],
-            content: '<i class="fa fa-qrcode" style="padding: 20px 0 0 0; line-height: ' + lineHeight + 'px"></i>'
+            content: '<i class="fa fa-qrcode" style="padding: 20px 0 0 0; line-height: ' + lineHeight + 'px"></i>',
+            eventName: 'scan-qr-code'
         })
+        this.subscribe(cameraButton)
 
         const cameraButtonModifier = new Modifier({
             size: [innerHeight * 0.12, innerHeight * 0.12],
@@ -57,7 +60,6 @@ export default class SendPaymentsView extends PageView {
         })
 
         node.add(cameraButtonModifier).add(cameraButton)
-        cameraButton.on('touchstart', () => this.broadcast('scan-qr-code'))
     }
 
     sendPayment() {

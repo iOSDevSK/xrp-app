@@ -80,7 +80,7 @@ export default class XButtonsView extends XView {
  * @class RowButton
  * @extends XButton
  */
-class RowButton extends XButton {
+export class RowButton extends XButton {
     onPressDown(e) {
         super.onPressDown(e)
         this._emit(e)

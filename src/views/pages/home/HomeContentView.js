@@ -1,5 +1,5 @@
 import XView from '../../XView'
-import QR from '../../../lib/qr'
+import * as QR from '../../../lib/qr'
 
 import Surface from 'famous/core/Surface'
 import ImageSurface from 'famous/surfaces/ImageSurface'

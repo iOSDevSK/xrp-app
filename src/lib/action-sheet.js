@@ -1,3 +1,5 @@
+/* global window */
+
 /**
  * @module helpers
  */
