@@ -8,6 +8,8 @@ import Transform from 'famous/core/Transform'
 import HeaderFooterLayout from 'famous/views/HeaderFooterLayout'
 import { RowButton } from '../XButtonsView'
 
+import $ from 'jquery'
+
 const lineHeight = innerHeight * 0.12 - 20
 
 export default class SendPaymentsView extends PageView {
@@ -72,6 +74,13 @@ export default class SendPaymentsView extends PageView {
 
     showAddress(data) {
         this.content.showAddress(data)
+    }
+
+    focus(cb) {
+        super.focus(cb)
+        $('div.press-here-for-qr-code').children().each((_, child) => {
+          $(child).addClass('fadeout')
+        })
     }
 }
 

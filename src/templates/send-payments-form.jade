@@ -1,9 +1,12 @@
 .margin16
 
+    div.press-here-for-qr-code
+        i.fa.fa-hand-o-up
+        label scan a qr code
 
     input(name="recipient"
           type="text"
-          value="type ripple account or scan qr code")#account-input
+          placeholder="type ripple account or scan qr code")#account-input
     label recipient account
 
 
@@ -13,18 +16,22 @@
           placeholder="0")#amount-input
     label amount to pay
 
-
-//
-    paper-input-decorator(label="recipient account" floatingLabel)
-        input(is="core-input"
-            name="recipient"
+    div.disabled-fields.hidden
+      input(name="currency"
             type="text"
-            value="rfemvFrpCAPc4hUa1v8mPRYdmaCqR1iFpe")#account-input
+            placeholder="currency"
+            disabled)#currency-input
+      label currency
 
-    paper-input-decorator(label="amount" floatingLabel)
-        input(is="core-input"
-            name="amount"
-            type="number"
-            pattern="[0-9.]*"
-            placeholder="0")#amount-input
+      input(name="destination-tag"
+            type="text"
+            placeholder="destination tag"
+            disabled)#dt-input
+      label destination tag
+
+      input(name="invoice-id"
+            type="text"
+            placeholder="invoice id"
+            disabled)#invoice-id-input
+      label invoice id
 
