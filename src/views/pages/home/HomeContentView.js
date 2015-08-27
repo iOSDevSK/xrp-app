@@ -28,7 +28,7 @@ export default class HomeContentView extends XView {
         layout.footer.add(this.footer)
 
         this.add(layout)
-        this.getDataURL({ uri: `ripple:\/\/${options.address}`})
+        this.getDataURL({ uri: `ripple:${options.address}`})
     }
 
     setQrCode(url) {
