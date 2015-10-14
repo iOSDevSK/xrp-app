@@ -3,6 +3,7 @@ import Timer from 'famous/utilities/Timer'
 import {errorConstructor} from './helpers'
 import jquery from 'jquery'
 import QRCode from 'qr-code'
+//import { barcodeScanner } from 'plugins'
 
 /* global HTMLElement */
 /* global document */
@@ -53,7 +54,7 @@ function scan() {
       reject(new ScannerNotAvailableError())
     }
     
-    window.cordova.plugins.barcodeScanner.scan(result, notAvailable)
+    window.plugins.barcodeScanner.scan(result, notAvailable)
   })
 }
 

@@ -43,7 +43,8 @@ export default class PaymentsController extends EventEmitter {
         to: {
           publicKey: options.recipient
         },
-        amount: options.amount
+        amount: options.amount,
+        destination_tag: Number(options.destination_tag)
       })
       this.emit('payment:confirmed', payment)
     }
@@ -60,10 +61,18 @@ export default class PaymentsController extends EventEmitter {
    * @param {String} data.amount
    * @param {String} data.recipient
    */
-  verifyPayment({amount, recipient}) {
-    const verified = (typeof amount === 'string') &&
+  verifyPayment({amount, recipient, destination_tag, currency}) {
+    let verified = (typeof amount === 'string') &&
                       (amount.length > 0)          &&
                       (/^\d*\.?\d*$/.test(amount))
+
+    if (destination_tag) {
+      verified = verified && (typeof destination_tag === 'string')
+    }
+
+    if (currency) {
+      verified = verified && (typeof currency === 'string') && (currency === 'XRP')
+    }
 
     console.log(`form verified: ${verified}`)
     return verified

@@ -53,12 +53,24 @@ export default class SendPaymentContentView extends XView {
      * @method showAddress
      * @param {RippleURI.Decoded} data
      */
-    showAddress({address, amount}) {
+    showAddress({address, amount, dt, currency}) {
         console.log('show address:', address)
         $('input#account-input').val(address)
 
         if (amount) {
             $('input#amount-input').val(amount)
+        }
+
+        if (currency && dt) {
+            $('div.disabled-fields').removeClass('hidden')
+        }
+
+        if (dt) {
+            $('input#dt-input').val(dt)
+        }
+
+        if (currency) {
+            $('input#currency-input').val(currency)
         }
     }
 
@@ -70,9 +82,15 @@ export default class SendPaymentContentView extends XView {
      */
     get data() {
         let data = {}
-        $('form.send-payments-content-form').serializeArray().forEach(item => {
+        const form = $('form.send-payments-content-form')
+
+        const disabled = form.find(':disabled').removeAttr('disabled')
+
+        form.serializeArray().forEach(item => {
           data[item.name] = item.value
         })
+
+        disabled.attr('disabled', 'disabled')
         return data
     }
 

@@ -4,17 +4,19 @@
         i.fa.fa-hand-o-up
         label scan a qr code
 
-    input(name="recipient"
-          type="text"
-          placeholder="type ripple account or scan qr code")#account-input
-    label recipient account
+    div
+      input(name="recipient"
+            type="text"
+            placeholder="type ripple account or scan qr code")#account-input
+      label recipient account
 
 
-    input(name="amount"
-          type="number"
-          pattern="[0-9+]*"
-          placeholder="0")#amount-input
-    label amount to pay
+    div
+      input(name="amount"
+            type="number"
+            step="0.00000001"
+            placeholder="0")#amount-input
+      label amount to pay
 
     div.disabled-fields.hidden
       input(name="currency"
@@ -23,15 +25,10 @@
             disabled)#currency-input
       label currency
 
-      input(name="destination-tag"
-            type="text"
+      input(name="destination_tag"
+            type="number"
+            step="1"
             placeholder="destination tag"
             disabled)#dt-input
       label destination tag
-
-      input(name="invoice-id"
-            type="text"
-            placeholder="invoice id"
-            disabled)#invoice-id-input
-      label invoice id
 

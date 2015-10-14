@@ -17,7 +17,8 @@
   },
   "browserify-shim": {
       "qr-code": "global:QRCode",
-      "ripple": "global:ripple"
+      "ripple": "global:ripple",
+      "plugins": "global:plugins"
   },
   "addToBrowserify": [
     [
@@ -89,7 +90,7 @@
     "superagent": "^1.2.0",
     "uglify-js": "^2.4.23",
     "uglifyify": "^3.0.1",
-    "xrp-app-lib": "git+ssh://git@github.com:anypay/xrp-app-lib.git#40cff4918f51a0ecc08dc96bfed6147fd8512091"
+    "xrp-app-lib": "git+ssh://git@github.com:anypay/xrp-app-lib.git#ef37b43d41dde55307978553074cb6a2392916f0"
   },
   "repository": "git@bitbucket.com:adamcmiel/xrp"
 }
